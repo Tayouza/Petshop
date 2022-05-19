@@ -14,5 +14,4 @@ if(isset($_REQUEST['inserir'])){
 
     PaisDao::inserir($pais);
 
-
 }
