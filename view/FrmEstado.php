@@ -1,8 +1,22 @@
 <?php
+
 $action = 'inserir';
 include_once "../DAO/PaisDao.php";
 include_once "../DAO/EstadoDao.php";
 include_once "../model/EstadoModel.php";
+
+
+$listaEstados = EstadoDao::buscar();
+$listaPais = PaisDao::buscar();
+
+if(isset($_REQUEST['editar'])){
+    $estadoId = EstadoDao::buscarId($_GET['id']);
+    $values['nome'] = $estadoId->getNome();
+    $values['uf'] = $estadoId->getUf();
+    $values['pais'] = $estadoId->getPais();
+    $action = "editar&id={$estadoId->getId()}";
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -79,30 +93,26 @@ include_once "../model/EstadoModel.php";
             <legend>Cadastro de estado</legend>
             <form method="POST" action="../controller/EstadoController.php?<?= $action ?>">
                 <label class="form-label">Nome: </label>
-                <input type="text" placeholder="Nome" class="form-control" name="txtNome">
+                <input type="text" placeholder="Nome" class="form-control" value="<?=$values['nome'] ?? ''?>" name="txtNome">
                 <label class="form-label">UF: </label>
-                <input type="text" class="form-control" name="txtSigla">
+                <input type="text" class="form-control" value="<?=$values['uf'] ?? ''?>" name="txtSigla">
                 <label class="form-label">País: </label>
                 <select class="form-select" name="txtPais">
                     <?php
-                    $listaPais = PaisDao::buscar();
                     foreach ($listaPais as $pais) {
                         $selecionar = "";
-                        /*if ($id == $pais->getId()) {
+                        if ($values['pais'] == $pais->getId()) {
                             $selecionar = "selected";
-                        }*/
+                        }
                         echo "<option {$selecionar} value='{$pais->getId()}'>{$pais->getNome()}</option>";
                     }
                     ?>
                 </select>
                 <input type="reset" value="Limpar" class="btn btn-warning">
-                <input type="submit" value="Cadastrar" class="btn btn-success my-2">
+                <input type="submit" value="<?= isset($values) ? 'Editar' : 'Cadastrar'  ?>" class="btn btn-success my-2">
             </form>
         </fieldset>
     </div>
-    <?php
-    $listaEstados = EstadoDao::buscar();
-    ?>
     <div class="container p-2">
         <table class="table table-striped">
             <thead>
@@ -110,6 +120,7 @@ include_once "../model/EstadoModel.php";
                     <th>Nome</th>
                     <th>UF</th>
                     <th>País</th>
+                    <th class="text-center">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -118,9 +129,15 @@ include_once "../model/EstadoModel.php";
                     echo "<tr>";
                     echo "<td> {$estado->getNome()} </td>";
                     echo "<td> {$estado->getUf()} </td>";
-                        //if($pais->getId == $estado->getPais){
+                    foreach ($listaPais as $pais) {
+                        if ($pais->getId() == $estado->getPais()) {
                             echo "<td> {$pais->getNome()} </td>";
-                        //}
+                        }
+                    }
+                    echo "<td class='text-center'>
+                            <a href='FrmEstado.php?editar&id={$estado->getId()}' class='btn btn-success'>Editar</a>
+                            <a href='../controller/EstadoController.php?editar&id={$estado->getId()}' class='btn btn-danger'>Excluir</a>
+                        </td>";
                     echo "</tr>";
                 }
                 ?>

@@ -31,4 +31,29 @@ class EstadoDao
         }
         return $lista;
     }
+
+    public static function buscarId($id)
+    {
+        $sql = "SELECT id, nome, uf, id_pais FROM estado WHERE id = {$id}";
+        $result = Conexao::consultar($sql);
+        if ($result != null) {
+            list($_id, $_nome, $_uf, $_pais) = mysqli_fetch_row($result);
+            $estado = new Estado();
+            $estado->setId($_id);
+            $estado->setNome($_nome);
+            $estado->setUf($_uf);
+            $estado->setPais($_pais);
+        }
+        return $estado;
+    }
+
+    public static function editar($estado)
+    {
+        $sql = "UPDATE estado SET 
+                nome = '{$estado->getNome()}', 
+                uf = '{$estado->getUf()}', 
+                id_pais = '{$estado->getPais()}' 
+                WHERE id = {$estado->getId()}";
+        Conexao::executar($sql);                
+    }
 }
