@@ -1,11 +1,16 @@
 <?php
 
-if(isset($_REQUEST['inserir'])){
+include_once '../model/CidadeModel.php';
+include_once '../DAO/CidadeDao.php';
 
+
+if (isset($_REQUEST['inserir'])) {
     $nome = $_POST['txtNome'];
-    $sigla = $_POST['txtSigla'];
+    $estado = $_POST['txtEstado'];
     $pais = $_POST['txtPais'];
 
-    echo $nome.' '.$sigla.' '.$pais;
+    $cidade = new Cidade($nome, $estado, $pais);
+    CidadeDao::inserir($cidade);
 
+    header("Location: ../view/FrmCidade.php");
 }

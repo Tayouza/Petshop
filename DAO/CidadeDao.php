@@ -1,32 +1,32 @@
 <?php
 include_once "../DAO/Conexao.php";
-include_once "../model/EstadoModel.php";
+include_once "../model/CidadeModel.php";
 
-class EstadoDao
+class CidadeDao
 {
-    public static function inserir($estado)
+    public static function inserir($cidade)
     {
-        $sql = "INSERT INTO estado(nome, uf, id_pais)
-                VALUES ('{$estado->getNome()}',
-                '{$estado->getUf()}',
-                '{$estado->getPais()}')";
+        $sql = "INSERT INTO cidade(nome, id_estado, id_pais)
+                VALUES ('{$cidade->getNome()}',
+                '{$cidade->getEstado()}',
+                '{$cidade->getPais()}')";
 
         Conexao::executar($sql);
     }
 
     public static function buscar()
     {
-        $sql = "SELECT id, nome, uf, id_pais FROM estado ORDER BY nome";
+        $sql = "SELECT id, nome, id_estado, id_pais FROM cidade ORDER BY nome";
         $result = Conexao::consultar($sql);
         $lista = new ArrayObject();
         if ($result != null) {
-            while (list($_id, $_nome, $_uf, $_pais) = mysqli_fetch_row($result)) {
-                $estado = new Estado();
-                $estado->setId($_id);
-                $estado->setNome($_nome);
-                $estado->setUf($_uf);
-                $estado->setPais($_pais);
-                $lista->append($estado);
+            while (list($_id, $_nome, $_estado, $_pais) = mysqli_fetch_row($result)) {
+                $cidade = new cidade();
+                $cidade->setId($_id);
+                $cidade->setNome($_nome);
+                $cidade->setEstado($_estado);
+                $cidade->setPais($_pais);
+                $lista->append($cidade);
             }
         }
         return $lista;
@@ -34,26 +34,26 @@ class EstadoDao
 
     public static function buscarId($id)
     {
-        $sql = "SELECT id, nome, uf, id_pais FROM estado WHERE id = {$id}";
+        $sql = "SELECT id, nome, id_estado, id_pais FROM cidade WHERE id = {$id}";
         $result = Conexao::consultar($sql);
         if ($result != null) {
-            list($_id, $_nome, $_uf, $_pais) = mysqli_fetch_row($result);
-            $estado = new Estado();
-            $estado->setId($_id);
-            $estado->setNome($_nome);
-            $estado->setUf($_uf);
-            $estado->setPais($_pais);
+            list($_id, $_nome, $_estado, $_pais) = mysqli_fetch_row($result);
+            $cidade = new cidade();
+            $cidade->setId($_id);
+            $cidade->setNome($_nome);
+            $cidade->setEstado($_estado);
+            $cidade->setPais($_pais);
         }
-        return $estado;
+        return $cidade;
     }
 
-    public static function editar($estado)
+    public static function editar($cidade)
     {
-        $sql = "UPDATE estado SET 
-                nome = '{$estado->getNome()}', 
-                uf = '{$estado->getUf()}', 
-                id_pais = '{$estado->getPais()}' 
-                WHERE id = {$estado->getId()}";
+        $sql = "UPDATE cidade SET 
+                nome = '{$cidade->getNome()}', 
+                id_estado = '{$cidade->getEstado()}', 
+                id_pais = '{$cidade->getPais()}' 
+                WHERE id = {$cidade->getId()}";
         Conexao::executar($sql);                
     }
 }

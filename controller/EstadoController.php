@@ -10,7 +10,6 @@ if (isset($_REQUEST['inserir'])) {
     $pais = $_POST['txtPais'];
 
     $estado = new Estado($nome, $uf, $pais);
-    echo "{$estado->getNome()} {$estado->getUf()} {$estado->getPais()}";
     EstadoDao::inserir($estado);
 
     header("Location: ../view/FrmEstado.php");

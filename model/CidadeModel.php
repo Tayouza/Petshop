@@ -1,16 +1,16 @@
 <?php
 
-class Estado
+class Cidade
 {
     private $id;
     private $nome;
-    private $uf;
+    private $estado;
     private $pais;
 
-    public function __construct($nome = null, $uf = null, $pais = null)
+    public function __construct($nome = null, $estado = null, $pais = null)
     {
         $this->nome = $nome;
-        $this->uf = $uf;
+        $this->estado = $estado;
         $this->pais = $pais;
     }
 
@@ -57,22 +57,22 @@ class Estado
     }
 
     /**
-     * Get the value of uf
+     * Get the value of estado
      */
-    public function getUf()
+    public function getEstado()
     {
-        return $this->uf;
+        return $this->estado;
     }
 
     /**
-     * Set the value of uf
+     * Set the value of estado
      *
      * @return  self
      */
 
-    public function setUf($uf)
+    public function setEstado($estado)
     {
-        $this->uf = $uf;
+        $this->estado = $estado;
 
         return $this;
     }

@@ -1,7 +1,21 @@
 <?php
-    $action = 'inserir';
-    include_once "../DAO/EstadoDao.php";
-    include_once "../DAO/PaisDao.php";
+$action = 'inserir';
+include_once "../DAO/EstadoDao.php";
+include_once "../DAO/PaisDao.php";
+include_once "../DAO/CidadeDao.php";
+
+$listaEstados = EstadoDao::buscar();
+$listaPais = PaisDao::buscar();
+$listaCidades = CidadeDao::buscar();
+
+if(isset($_REQUEST['editar'])){
+    $cidadeId = CidadeDao::buscarId($_GET['id']);
+    $values['nome'] = $cidadeId->getNome(); 
+    $values['estado'] = $cidadeId->getEstado(); 
+    $values['pais'] = $cidadeId->getPais(); 
+    $action = "editar&id={$cidadeId->getId()}";
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -23,8 +37,7 @@
                     <img src="../assets/logo.jpg" style="border-radius: 50%;" width="100px" alt="">
                 </a>
                 <h1><a href="../index.php" class="d-xxl-none" style="text-decoration: none; color: black">Petshop Tay</a></h1>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
@@ -77,25 +90,31 @@
     <div class="container p-2">
         <fieldset>
             <legend>Cadastro de cidade</legend>
-            <form method="POST" action="../controller/CidadeController.php?<?=$action?>">
+            <form method="POST" action="../controller/CidadeController.php?<?= $action ?>">
                 <label class="form-label">Nome: </label>
-                <input type="text" placeholder="Nome" class="form-control" name="txtNome">
+                <input type="text" value="<?= $values['nome'] ?? ''?>" placeholder="Nome" class="form-control" name="txtNome">
                 <label class="form-label">Estado: </label>
-                <select class="form-select" name="txtSigla">
+                <select class="form-select" name="txtEstado">
                     <?php
-                        $listaEstado = EstadoDao::buscar();
-                        foreach($listaEstado as $estados){
-                            echo "<option value='{$estados->getId()}'>{$estados->getNome()}</option>";
-                        }
+                    $listaEstado = EstadoDao::buscar();
+                    foreach ($listaEstado as $estados) {
+                        $selecionar = '';
+                        if($values['estado'] == $estados->getId())
+                            $selecionar = 'selected';
+                        echo "<option $selecionar value='{$estados->getId()}'>{$estados->getNome()}</option>";
+                    }
                     ?>
                 </select>
                 <label class="form-label">País: </label>
                 <select class="form-select" name="txtPais">
                     <?php
-                        $listaPais = PaisDao::buscar();
-                        foreach($listaPais as $paises){
-                            echo "<option value='{$paises->getId()}'>{$paises->getNome()}</option>";
-                        }
+                    $listaPais = PaisDao::buscar();
+                    foreach ($listaPais as $paises) {
+                        $selecionar = '';
+                        if($values['pais'] == $paises->getId())
+                            $selecionar = 'selected';
+                        echo "<option $selecionar value='{$paises->getId()}'>{$paises->getNome()}</option>";
+                    }
                     ?>
                 </select>
                 <br>
@@ -103,6 +122,41 @@
                 <input type="submit" value="Cadastrar" class="btn btn-success">
             </form>
         </fieldset>
+    </div>
+    <div class="container p-2">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>UF</th>
+                    <th>País</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                foreach ($listaCidades as $cidade) {
+                    echo "<tr>";
+                    echo "<td> {$cidade->getNome()} </td>";
+                    foreach ($listaEstado as $estado) {
+                        if ($estado->getId() == $cidade->getPais()) {
+                            echo "<td> {$estado->getNome()} </td>";
+                        }
+                    }
+                    foreach ($listaPais as $pais) {
+                        if ($pais->getId() == $cidade->getPais()) {
+                            echo "<td> {$pais->getNome()} </td>";
+                        }
+                    }
+                    echo "<td class='text-center'>
+                            <a href='FrmCidade.php?editar&id={$cidade->getId()}' class='btn btn-success'>Editar</a>
+                            <a href='../controller/CidadeController.php?editar&id={$cidade->getId()}' class='btn btn-danger'>Excluir</a>
+                        </td>";
+                    echo "</tr>";
+                }
+                ?>
+            </tbody>
+        </table>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
