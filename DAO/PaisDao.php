@@ -1,6 +1,6 @@
 <?php
-require "../DAO/Conexao.php";
-require "../model/paisModel.php";
+include_once "../DAO/Conexao.php";
+include_once "../model/paisModel.php";
 
 class PaisDao{
     public static function inserir($pais){
@@ -21,6 +21,5 @@ class PaisDao{
             }
         }
         return $lista;
-
     }
 }

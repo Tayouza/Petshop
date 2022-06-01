@@ -1,3 +1,8 @@
+<?php
+include_once "../DAO/PaisDao.php";
+include_once "../DAO/EstadoDao.php";
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -17,8 +22,7 @@
                     <img src="../assets/logo.jpg" style="border-radius: 50%;" width="100px" alt="">
                 </a>
                 <h1><a href="../index.php" class="d-xxl-none" style="text-decoration: none; color: black">Petshop Tay</a></h1>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
@@ -74,34 +78,57 @@
             <form>
                 <label class="form-label">Nome: </label>
                 <input type="text" placeholder="Nome" class="form-control">
-                
+
                 <label class="form-label">Nacionalidade: </label>
                 <input type="text" placeholder="Nacionalidade" class="form-control">
-                
+
                 <label class="form-label">CPF ou Passaporte: </label>
                 <input type="text" placeholder="CPF ou Passaporte" class="form-control">
-                
+
                 <label class="form-label">E-mail: </label>
                 <input type="email" placeholder="E-mail" class="form-control">
-                
+
                 <label class="form-label">Telefone: </label>
                 <input type="tel" placeholder="Telefone" class="form-control">
-                
+
+                <label class="form-label">CEP: (8 digitos)</label>
+                <input type="text" placeholder="CEP" onblur="getEndereco(this.value)" class="form-control" pattern="\d{5}-?\d{3}" name="txtCep">
+
                 <label class="form-label">Endereço: </label>
-                <input type="text" placeholder="Endereço" class="form-control">
-                
+                <input type="text" placeholder="Endereço" name="endereco" class="form-control">
+
                 <label class="form-label">Número: </label>
-                <input type="text" placeholder="Número" class="form-control">
-                
+                <input type="text" placeholder="Número" name="numero" class="form-control">
+
                 <label class="form-label">Cidade: </label>
-                <select class="form-select">
+                <select class="form-select" name="cidade" id="cidade">
                     <option></option>
                 </select>
-                
+
+                <label class="form-label">Estado: </label>
+                <select class="form-select" name="estado" id="estado">
+                    <?php
+                    $listaEstado = EstadoDao::buscar();
+                    foreach ($listaEstado as $estados) {
+                        echo "<option value='{$estados->getId()}' uf='{$estados->getUf()}'>{$estados->getNome()}</option>";
+                    }
+                    ?>
+                </select>
+
+                <label class="form-label">Pais: </label>
+                <select class="form-select">
+                    <?php
+                    $listaPais = PaisDao::buscar();
+                    foreach ($listaPais as $paises) {
+                        echo "<option value='{$paises->getId()}'>{$paises->getNome()}</option>";
+                    }
+                    ?>
+                </select>
+
                 <label class="form-label">Complemento: </label>
-                <input type="text" placeholder="Complemento"  class="form-control">
-                
-                <a href="/cadPet.html" class="btn btn-primary my-2">Cadastre o seu Pet</a>
+                <input type="text" placeholder="Complemento" class="form-control">
+
+                <a href="FrmPet.php" class="btn btn-primary my-2">Cadastre o seu Pet</a>
                 <input type="reset" value="Limpar" class="btn btn-warning">
                 <input type="submit" value="Cadastrar" class="btn btn-success">
             </form>
@@ -137,7 +164,7 @@
                             <td>-</td>
                             <td>
                                 <input type="button" value="Alterar" class="btn btn-warning mb-1">
-                                <input type="button" value="Remover" class="btn btn-success">
+                                <input type="button" value="Remover" class="btn btn-danger">
                             </td>
                         </tr>
                         <tr>
@@ -152,7 +179,7 @@
                             <td>-</td>
                             <td>
                                 <input type="button" value="Alterar" class="btn btn-warning mb-1">
-                                <input type="button" value="Remover" class="btn btn-success">
+                                <input type="button" value="Remover" class="btn btn-danger">
                             </td>
                         </tr>
                         <tr>
@@ -167,7 +194,7 @@
                             <td>Casa 2</td>
                             <td>
                                 <input type="button" value="Alterar" class="btn btn-warning mb-1">
-                                <input type="button" value="Remover" class="btn btn-success">
+                                <input type="button" value="Remover" class="btn btn-danger">
                             </td>
                         </tr>
                     </tbody>
@@ -178,6 +205,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="../script/viacep.js"></script>
 </body>
 
 </html>

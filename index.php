@@ -78,7 +78,7 @@
                     <p class="card-text">Para podermos realizar os procedimentos com o seu pet precisamos do seu
                         cadastro
                     </p>
-                    <a href="view/FrmCidade.php" class="btn btn-primary">Cadastre</a>
+                    <a href="view/FrmCliente.php" class="btn btn-primary">Cadastre</a>
                 </div>
             </div>
             <div class="card m-2" style="width: 18rem;">

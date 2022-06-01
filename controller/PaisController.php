@@ -9,9 +9,8 @@ if(isset($_REQUEST['inserir'])){
     $sigla = $_POST['txtSigla'];
 
     $pais = new Pais($nome, $sigla);
-
-    echo 'Você cadastrou o Pais: '.$pais->getNome().', com a Sigla: '.$pais->getSigla();
-
     PaisDao::inserir($pais);
+
+    header("Location: ../view/FrmPais.php");
 
 }
