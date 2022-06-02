@@ -9,16 +9,14 @@ include_once "../model/EstadoModel.php";
 $listaEstados = EstadoDao::buscar();
 $listaPais = PaisDao::buscar();
 
-if(isset($_REQUEST['editar'])){
+if (isset($_REQUEST['editar'])) {
     $estadoId = EstadoDao::buscarId($_GET['id']);
     $values['nome'] = $estadoId->getNome();
     $values['uf'] = $estadoId->getUf();
     $values['pais'] = $estadoId->getPais();
     $action = "editar&id={$estadoId->getId()}";
 }
-
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -93,18 +91,14 @@ if(isset($_REQUEST['editar'])){
             <legend>Cadastro de estado</legend>
             <form method="POST" action="../controller/EstadoController.php?<?= $action ?>">
                 <label class="form-label">Nome: </label>
-                <input type="text" placeholder="Nome" class="form-control" value="<?=$values['nome'] ?? ''?>" name="txtNome">
+                <input type="text" placeholder="Nome" class="form-control" value="<?= $values['nome'] ?? '' ?>" name="txtNome">
                 <label class="form-label">UF: </label>
-                <input type="text" class="form-control" value="<?=$values['uf'] ?? ''?>" name="txtSigla">
+                <input type="text" class="form-control" value="<?= $values['uf'] ?? '' ?>" name="txtSigla">
                 <label class="form-label">País: </label>
                 <select class="form-select" name="txtPais">
                     <?php
                     foreach ($listaPais as $pais) {
-                        $selecionar = "";
-                        if ($values['pais'] == $pais->getId()) {
-                            $selecionar = "selected";
-                        }
-                        echo "<option {$selecionar} value='{$pais->getId()}'>{$pais->getNome()}</option>";
+                        echo "<option " . ($values['pais'] == $pais->getId() ? 'selected' : '') . " value='{$pais->getId()}'>{$pais->getNome()}</option>";
                     }
                     ?>
                 </select>
@@ -136,7 +130,7 @@ if(isset($_REQUEST['editar'])){
                     }
                     echo "<td class='text-center'>
                             <a href='FrmEstado.php?editar&id={$estado->getId()}' class='btn btn-success'>Editar</a>
-                            <a href='../controller/EstadoController.php?editar&id={$estado->getId()}' class='btn btn-danger'>Excluir</a>
+                            <a href='../controller/EstadoController.php?excluir&id={$estado->getId()}' key='{$estado->getId()}' class='btn btn-danger excluir'>Excluir</a>
                         </td>";
                     echo "</tr>";
                 }
@@ -144,9 +138,6 @@ if(isset($_REQUEST['editar'])){
             </tbody>
         </table>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-</body>
-
-</html>
+    <?php
+    include "templates/footer.php";
+    ?>

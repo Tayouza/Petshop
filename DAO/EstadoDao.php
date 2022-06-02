@@ -32,9 +32,8 @@ class EstadoDao
         return $lista;
     }
 
-    public static function buscarId($id)
-    {
-        $sql = "SELECT id, nome, uf, id_pais FROM estado WHERE id = {$id}";
+    public static function buscarId($id){
+        $sql = "SELECT id, nome, uf, id_pais FROM estado WHERE estado.id = {$id}";
         $result = Conexao::consultar($sql);
         if ($result != null) {
             list($_id, $_nome, $_uf, $_pais) = mysqli_fetch_row($result);
@@ -43,8 +42,9 @@ class EstadoDao
             $estado->setNome($_nome);
             $estado->setUf($_uf);
             $estado->setPais($_pais);
+            return $estado;
         }
-        return $estado;
+        return null;
     }
 
     public static function editar($estado)
@@ -54,6 +54,12 @@ class EstadoDao
                 uf = '{$estado->getUf()}', 
                 id_pais = '{$estado->getPais()}' 
                 WHERE id = {$estado->getId()}";
-        Conexao::executar($sql);                
+        Conexao::executar($sql);
+    }
+
+    public static function excluir($id)
+    {
+        $sql = "DELETE FROM estado WHERE estado.id = {$id}";
+        Conexao::executar($sql);
     }
 }

@@ -98,10 +98,7 @@ if(isset($_REQUEST['editar'])){
                     <?php
                     $listaEstado = EstadoDao::buscar();
                     foreach ($listaEstado as $estados) {
-                        $selecionar = '';
-                        if($values['estado'] == $estados->getId())
-                            $selecionar = 'selected';
-                        echo "<option $selecionar value='{$estados->getId()}'>{$estados->getNome()}</option>";
+                        echo "<option ".($values['estado'] == $estados->getId() ? 'selected' : '')." value='{$estados->getId()}'>{$estados->getNome()}</option>";
                     }
                     ?>
                 </select>
@@ -110,16 +107,13 @@ if(isset($_REQUEST['editar'])){
                     <?php
                     $listaPais = PaisDao::buscar();
                     foreach ($listaPais as $paises) {
-                        $selecionar = '';
-                        if($values['pais'] == $paises->getId())
-                            $selecionar = 'selected';
-                        echo "<option $selecionar value='{$paises->getId()}'>{$paises->getNome()}</option>";
+                        echo "<option ".($values['pais'] == $paises->getId() ? 'selected' : '')." value='{$paises->getId()}'>{$paises->getNome()}</option>";
                     }
                     ?>
                 </select>
                 <br>
                 <input type="reset" value="Limpar" class="btn btn-warning">
-                <input type="submit" value="Cadastrar" class="btn btn-success">
+                <input type="submit" value="<?=isset($_REQUEST['editar']) ? 'Editar' : 'Cadastrar'?>" class="btn btn-success">
             </form>
         </fieldset>
     </div>
@@ -139,7 +133,7 @@ if(isset($_REQUEST['editar'])){
                     echo "<tr>";
                     echo "<td> {$cidade->getNome()} </td>";
                     foreach ($listaEstado as $estado) {
-                        if ($estado->getId() == $cidade->getPais()) {
+                        if ($estado->getId() == $cidade->getEstado()) {
                             echo "<td> {$estado->getNome()} </td>";
                         }
                     }
@@ -150,7 +144,7 @@ if(isset($_REQUEST['editar'])){
                     }
                     echo "<td class='text-center'>
                             <a href='FrmCidade.php?editar&id={$cidade->getId()}' class='btn btn-success'>Editar</a>
-                            <a href='../controller/CidadeController.php?editar&id={$cidade->getId()}' class='btn btn-danger'>Excluir</a>
+                            <a  key='{$cidade->getId()}' class='btn btn-danger excluir'>Excluir</a>
                         </td>";
                     echo "</tr>";
                 }
@@ -158,9 +152,6 @@ if(isset($_REQUEST['editar'])){
             </tbody>
         </table>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-</body>
-
-</html>
+    <?php
+    include "templates/footer.php";
+    ?>
