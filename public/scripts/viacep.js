@@ -1,8 +1,9 @@
-async function getEndereco(cep) {
+async function getEndereco() {
     const inputEndereco = document.querySelector("input[name=endereco]")
     const inputCidade = document.querySelector("#cidade")
     const inputEstado = document.querySelector("#estado")
     const inputPais = document.querySelector("#pais")
+    let cep = cepMask.unmaskedValue
 
     cep = cep.length === 8 ? cep : "00000000"
 
@@ -19,6 +20,7 @@ async function getEndereco(cep) {
                 let option = document.createElement("option")
                 option.text = data.localidade
                 inputCidade.add(option)
+                option.setAttribute('nome', data.localidade)
                 option.setAttribute('selected', 'true')
             }
 
@@ -36,8 +38,9 @@ async function getEndereco(cep) {
                     let option = document.createElement("option")
                     option.text = nomeEstado.nome
                     inputEstado.add(option)
-                    option.setAttribute('selected', 'true')
+                    option.setAttribute('nome', nomeEstado.nome)
                     option.setAttribute('uf', data.uf)
+                    option.setAttribute('selected', 'true')
                 }
 
             }
@@ -48,6 +51,14 @@ async function getEndereco(cep) {
                 if (index.getAttribute('uf') === data.uf) {
                     index.setAttribute("selected", "true")
                 }
+            }
+
+            if (!inTheArr(inputPais, 'Brasil')) {
+                let option = document.createElement("option")
+                option.text = 'Brasil'
+                inputPais.add(option)
+                option.setAttribute('nome', 'Brasil')
+                option.setAttribute('selected', 'true')
             }
 
             if (!data.erro) {

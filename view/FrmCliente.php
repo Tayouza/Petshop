@@ -91,10 +91,10 @@ include_once "../DAO/CidadeDao.php";
                 <input type="email" placeholder="E-mail" class="form-control">
 
                 <label class="form-label">Telefone: </label>
-                <input type="tel" placeholder="Telefone" class="form-control">
+                <input type="tel" placeholder="Telefone" class="form-control" id="telefone">
 
                 <label class="form-label">CEP: (8 digitos)</label>
-                <input type="text" placeholder="CEP" onblur="getEndereco(this.value)" class="form-control" pattern="\d{5}-?\d{3}" name="txtCep">
+                <input type="text" placeholder="CEP" id="cep" onblur="getEndereco()" class="form-control" pattern="\d{5}-?\d{3}" name="txtCep">
 
                 <!--loading buscar cep-->
                 <div class="loading">
@@ -127,7 +127,7 @@ include_once "../DAO/CidadeDao.php";
                     <?php
                     $listaEstado = EstadoDao::buscar();
                     foreach ($listaEstado as $estados) {
-                        echo "<option value='{$estados->getId()}' uf='{$estados->getUf()}'>{$estados->getNome()}</option>";
+                        echo "<option value='{$estados->getId()}' uf='{$estados->getUf()}' nome='{$estados->getNome()}'>{$estados->getNome()}</option>";
                     }
                     ?>
                 </select>

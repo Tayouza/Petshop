@@ -98,7 +98,7 @@ if(isset($_REQUEST['editar'])){
                     <?php
                     $listaEstado = EstadoDao::buscar();
                     foreach ($listaEstado as $estados) {
-                        echo "<option ".($values['estado'] == $estados->getId() ? 'selected' : '')." value='{$estados->getId()}'>{$estados->getNome()}</option>";
+                        echo "<option ".(isset($values) ?? ($values['estado'] == $estados->getId() ? 'selected' : ''))." value='{$estados->getId()}'>{$estados->getNome()}</option>";
                     }
                     ?>
                 </select>
@@ -107,7 +107,7 @@ if(isset($_REQUEST['editar'])){
                     <?php
                     $listaPais = PaisDao::buscar();
                     foreach ($listaPais as $paises) {
-                        echo "<option ".($values['pais'] == $paises->getId() ? 'selected' : '')." value='{$paises->getId()}'>{$paises->getNome()}</option>";
+                        echo "<option ".(isset($values) ?? ($values['pais'] == $paises->getId() ? 'selected' : ''))." value='{$paises->getId()}'>{$paises->getNome()}</option>";
                     }
                     ?>
                 </select>
