@@ -130,7 +130,7 @@ if (isset($_REQUEST['editar'])) {
                     }
                     echo "<td class='text-center'>
                             <a href='FrmEstado.php?editar&id={$estado->getId()}' class='btn btn-success'>Editar</a>
-                            <a href='../controller/EstadoController.php?excluir&id={$estado->getId()}' key='{$estado->getId()}' class='btn btn-danger excluir'>Excluir</a>
+                            <a local='Estado' key='{$estado->getId()}' class='btn btn-danger excluir'>Excluir</a>
                         </td>";
                     echo "</tr>";
                 }

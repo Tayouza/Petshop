@@ -1,0 +1,11 @@
+.loading{
+    display: none;
+    background-color: #4444;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    place-items: center;
+}

@@ -144,7 +144,7 @@ if(isset($_REQUEST['editar'])){
                     }
                     echo "<td class='text-center'>
                             <a href='FrmCidade.php?editar&id={$cidade->getId()}' class='btn btn-success'>Editar</a>
-                            <a  key='{$cidade->getId()}' class='btn btn-danger excluir'>Excluir</a>
+                            <a local='Cidade' key='{$cidade->getId()}' class='btn btn-danger excluir'>Excluir</a>
                         </td>";
                     echo "</tr>";
                 }

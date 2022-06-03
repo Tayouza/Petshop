@@ -1,6 +1,7 @@
 <?php
 include_once "../DAO/PaisDao.php";
 include_once "../DAO/EstadoDao.php";
+include_once "../DAO/CidadeDao.php";
 ?>
 
 <!DOCTYPE html>
@@ -11,6 +12,7 @@ include_once "../DAO/EstadoDao.php";
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="../public/css/loading.css">
     <title>Cadastro de cliente</title>
 </head>
 
@@ -94,15 +96,30 @@ include_once "../DAO/EstadoDao.php";
                 <label class="form-label">CEP: (8 digitos)</label>
                 <input type="text" placeholder="CEP" onblur="getEndereco(this.value)" class="form-control" pattern="\d{5}-?\d{3}" name="txtCep">
 
+                <!--loading buscar cep-->
+                <div class="loading">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only"></span>
+                    </div>
+                </div>
+
                 <label class="form-label">Endereço: </label>
                 <input type="text" placeholder="Endereço" name="endereco" class="form-control">
 
                 <label class="form-label">Número: </label>
                 <input type="text" placeholder="Número" name="numero" class="form-control">
+                
+                <label class="form-label">Complemento: </label>
+                <input type="text" placeholder="Complemento" class="form-control">
 
                 <label class="form-label">Cidade: </label>
                 <select class="form-select" name="cidade" id="cidade">
-                    <option></option>
+                    <?php
+                    $listaCidade = CidadeDao::buscar();
+                    foreach ($listaCidade as $cidades) {
+                        echo "<option value='{$cidades->getId()}' nome='{$cidades->getNome()}'>{$cidades->getNome()}</option>";
+                    }
+                    ?>
                 </select>
 
                 <label class="form-label">Estado: </label>
@@ -116,7 +133,7 @@ include_once "../DAO/EstadoDao.php";
                 </select>
 
                 <label class="form-label">Pais: </label>
-                <select class="form-select">
+                <select class="form-select" name="pais" id="pais">
                     <?php
                     $listaPais = PaisDao::buscar();
                     foreach ($listaPais as $paises) {
@@ -125,8 +142,6 @@ include_once "../DAO/EstadoDao.php";
                     ?>
                 </select>
 
-                <label class="form-label">Complemento: </label>
-                <input type="text" placeholder="Complemento" class="form-control">
 
                 <a href="FrmPet.php" class="btn btn-primary my-2">Cadastre o seu Pet</a>
                 <input type="reset" value="Limpar" class="btn btn-warning">

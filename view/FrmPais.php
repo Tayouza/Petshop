@@ -113,7 +113,7 @@ if (isset($_REQUEST['editar'])) {
                     echo "<td> {$pais->getSigla()} </td>";
                     echo "<td class='text-center'>
                             <a href='FrmPais.php?editar&id={$pais->getId()}' class='btn btn-success'>Editar</a>
-                            <a href='../controller/PaisController.php?excluir&id={$pais->getId()}' key='{$pais->getId()}' class='btn btn-danger excluir'>Excluir</a>
+                            <a local='Pais' key='{$pais->getId()}' class='btn btn-danger excluir'>Excluir</a>
                         </td>";
                     echo "</tr>";
                 }
