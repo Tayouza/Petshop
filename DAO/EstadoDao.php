@@ -63,11 +63,10 @@ class EstadoDao
         Conexao::executar($sql);
     }
 
-    public static function inserirSemPais($estado)
+    public static function inserirSoComNome($estado)
     {
-        $sql = "INSERT INTO estado(nome, uf)
-                VALUES ('{$estado->getNome()}',
-                '{$estado->getUf()}')";
+        $sql = "INSERT INTO estado(nome)
+                VALUES ('{$estado->getNome()}')";
 
         Conexao::executar($sql);
     }

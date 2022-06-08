@@ -263,8 +263,7 @@ class Cliente
         $getCidade = $this->getDadosEFiltrar($cidade, new CidadeDao); //Procura a chave do array correspondente ao pais no banco
 
         if(!$getCidade){ //se não estiver no banco recebe false e ! pra inverter
-            $novaCidade = new Cidade();
-            $novaCidade->setNome($cidade);
+            $novaCidade = new Cidade($cidade);
             CidadeDao::inserirSoComNome($novaCidade);
             $getCidade = $this->getDadosEFiltrar($cidade, new CidadeDao);
         }
@@ -292,10 +291,8 @@ class Cliente
         $getEstado = $this->getDadosEFiltrar($estado, new EstadoDao); //Procura a chave do array correspondente ao pais no banco
 
         if(!$getEstado){ //se não estiver no banco recebe false e ! pra inverter
-            $novoEstado = new Estado();
-            $novoEstado->setNome($estado);
-            $novoEstado->setUf(strtoupper(str_split($estado, 2)[0]));
-            EstadoDao::inserirSemPais($novoEstado);
+            $novoEstado = new Estado($estado);
+            EstadoDao::inserirSoComNome($novoEstado);
             $getEstado = $this->getDadosEFiltrar($estado, new EstadoDao);
         }
 

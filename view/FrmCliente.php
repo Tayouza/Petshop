@@ -2,6 +2,7 @@
 include_once "../DAO/PaisDao.php";
 include_once "../DAO/EstadoDao.php";
 include_once "../DAO/CidadeDao.php";
+include_once "../DAO/ClienteDao.php";
 
 $action = 'inserir';
 ?>
@@ -87,7 +88,7 @@ $action = 'inserir';
                 <input type="text" placeholder="Nacionalidade" class="form-control" name="txtNacionalidade">
 
                 <label class="form-label">CPF ou Passaporte: </label>
-                <input type="text" placeholder="CPF ou Passaporte" class="form-control" name="txtCPF">
+                <input type="text" placeholder="CPF ou Passaporte" class="form-control" name="txtCPF" id="cpf">
 
                 <label class="form-label">E-mail: </label>
                 <input type="email" placeholder="E-mail" class="form-control" name="txtEmail">
@@ -163,13 +164,31 @@ $action = 'inserir';
                             <th>Telefone</th>
                             <th>Endereço</th>
                             <th>Número</th>
-                            <th>Cidade</th>
                             <th>Complemento</th>
-                            <th></th>
+                            <th>Cidade</th>
+                            <th>Estado</th>
+                            <th>Pais</th>
                         </tr>
                     </thead>
                     <tbody>
-
+                        <?php
+                        $listaCliente = ClienteDao::buscar();
+                        foreach($listaCliente as $cliente){
+                            echo '<tr>';
+                                echo "<td>{$cliente->getNome()}</td>";
+                                echo "<td>{$cliente->getNacionalidade()}</td>";
+                                echo "<td>{$cliente->getCpf()}</td>";
+                                echo "<td>{$cliente->getEmail()}</td>";
+                                echo "<td>{$cliente->getTelefone()}</td>";
+                                echo "<td>{$cliente->getEndereco()}</td>";
+                                echo "<td>{$cliente->getNumero()}</td>";
+                                echo "<td>{$cliente->getComplemento()}</td>";
+                                echo "<td>{$cliente->getCidade()}</td>";
+                                echo "<td>{$cliente->getEstado()}</td>";
+                                echo "<td>{$cliente->getPais()}</td>";
+                            echo '</tr>';
+                        }
+                        ?>
                     </tbody>
                 </table>
             </div>

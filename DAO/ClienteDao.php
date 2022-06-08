@@ -1,6 +1,6 @@
 <?php
 include_once "../DAO/Conexao.php";
-include_once "../model/CidadeModel.php";
+include_once "../model/ClienteModel.php";
 
 class ClienteDao
 {
@@ -31,20 +31,47 @@ class ClienteDao
                         '{$cliente->getEstado()}',
                         '{$cliente->getPais()}'
                         )";
-                        
+
         Conexao::executar($sql);
     }
 
     public static function buscar()
     {
-        $sql = "SELECT id, nome, id_estado, id_pais FROM cidade ORDER BY nome";
+        $sql = "SELECT * FROM cliente";
         $result = Conexao::consultar($sql);
         $lista = new ArrayObject();
         if ($result != null) {
-            while (list($_id, $_nome, $_estado, $_pais) = mysqli_fetch_row($result)) {
-                $cidade = new cidade();
+            while (
+                list(
+                    $_id,
+                    $_nome,
+                    $_nacionalidade,
+                    $_cpf,
+                    $_email,
+                    $_telefone,
+                    $_cep,
+                    $_endereco,
+                    $_numero,
+                    $_complemento,
+                    $_cidade,
+                    $_estado,
+                    $_pais
+                )
+                =
+                mysqli_fetch_row($result)
+            ) {
+                $cidade = new Cliente();
                 $cidade->setId($_id);
                 $cidade->setNome($_nome);
+                $cidade->setNacionalidade($_nacionalidade);
+                $cidade->setCpf($_cpf);
+                $cidade->setEmail($_email);
+                $cidade->setTelefone($_telefone);
+                $cidade->setCep($_cep);
+                $cidade->setEndereco($_endereco);
+                $cidade->setNumero($_numero);
+                $cidade->setComplemento($_complemento);
+                $cidade->setCidade($_cidade);
                 $cidade->setEstado($_estado);
                 $cidade->setPais($_pais);
                 $lista->append($cidade);
