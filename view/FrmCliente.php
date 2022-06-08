@@ -2,6 +2,8 @@
 include_once "../DAO/PaisDao.php";
 include_once "../DAO/EstadoDao.php";
 include_once "../DAO/CidadeDao.php";
+
+$action = 'inserir';
 ?>
 
 <!DOCTYPE html>
@@ -77,21 +79,21 @@ include_once "../DAO/CidadeDao.php";
     <div class="container p-2">
         <fieldset>
             <legend>Cadastro de cliente</legend>
-            <form>
+            <form method="POST" action="../controller/ClienteController.php?<?=$action?>">
                 <label class="form-label">Nome: </label>
-                <input type="text" placeholder="Nome" class="form-control">
+                <input type="text" placeholder="Nome" class="form-control" name="txtNome">
 
                 <label class="form-label">Nacionalidade: </label>
-                <input type="text" placeholder="Nacionalidade" class="form-control">
+                <input type="text" placeholder="Nacionalidade" class="form-control" name="txtNacionalidade">
 
                 <label class="form-label">CPF ou Passaporte: </label>
-                <input type="text" placeholder="CPF ou Passaporte" class="form-control">
+                <input type="text" placeholder="CPF ou Passaporte" class="form-control" name="txtCPF">
 
                 <label class="form-label">E-mail: </label>
-                <input type="email" placeholder="E-mail" class="form-control">
+                <input type="email" placeholder="E-mail" class="form-control" name="txtEmail">
 
                 <label class="form-label">Telefone: </label>
-                <input type="tel" placeholder="Telefone" class="form-control" id="telefone">
+                <input type="tel" placeholder="Telefone" class="form-control" id="telefone" name="txtTelefone">
 
                 <label class="form-label">CEP: (8 digitos)</label>
                 <input type="text" placeholder="CEP" id="cep" onblur="getEndereco()" class="form-control" pattern="\d{5}-?\d{3}" name="txtCep">
@@ -104,20 +106,20 @@ include_once "../DAO/CidadeDao.php";
                 </div>
 
                 <label class="form-label">Endereço: </label>
-                <input type="text" placeholder="Endereço" name="endereco" class="form-control">
+                <input type="text" placeholder="Endereço" name="txtEndereco" id="endereco" class="form-control">
 
                 <label class="form-label">Número: </label>
-                <input type="text" placeholder="Número" name="numero" class="form-control">
+                <input type="text" placeholder="Número" name="txtNumero" class="form-control">
                 
                 <label class="form-label">Complemento: </label>
-                <input type="text" placeholder="Complemento" class="form-control">
+                <input type="text" placeholder="Complemento" name="txtComplemento" class="form-control">
 
                 <label class="form-label">Cidade: </label>
                 <select class="form-select" name="cidade" id="cidade">
                     <?php
                     $listaCidade = CidadeDao::buscar();
                     foreach ($listaCidade as $cidades) {
-                        echo "<option value='{$cidades->getId()}' nome='{$cidades->getNome()}'>{$cidades->getNome()}</option>";
+                        echo "<option value='{$cidades->getNome()}' nome='{$cidades->getNome()}'>{$cidades->getNome()}</option>";
                     }
                     ?>
                 </select>
@@ -127,7 +129,7 @@ include_once "../DAO/CidadeDao.php";
                     <?php
                     $listaEstado = EstadoDao::buscar();
                     foreach ($listaEstado as $estados) {
-                        echo "<option value='{$estados->getId()}' uf='{$estados->getUf()}' nome='{$estados->getNome()}'>{$estados->getNome()}</option>";
+                        echo "<option value='{$estados->getNome()}' uf='{$estados->getUf()}' nome='{$estados->getNome()}'>{$estados->getNome()}</option>";
                     }
                     ?>
                 </select>
@@ -137,7 +139,7 @@ include_once "../DAO/CidadeDao.php";
                     <?php
                     $listaPais = PaisDao::buscar();
                     foreach ($listaPais as $paises) {
-                        echo "<option value='{$paises->getId()}'>{$paises->getNome()}</option>";
+                        echo "<option value='{$paises->getNome()}'>{$paises->getNome()}</option>";
                     }
                     ?>
                 </select>
@@ -167,51 +169,7 @@ include_once "../DAO/CidadeDao.php";
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Taylor Souza</td>
-                            <td>Brasileiro</td>
-                            <td>999.999.999-99</td>
-                            <td>tayouzadev@gmail.com</td>
-                            <td>(51)99999-9999</td>
-                            <td>Rua A</td>
-                            <td>123</td>
-                            <td>Centro</td>
-                            <td>-</td>
-                            <td>
-                                <input type="button" value="Alterar" class="btn btn-warning mb-1">
-                                <input type="button" value="Remover" class="btn btn-danger">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Carlinhos Aguiar</td>
-                            <td>Brasileiro</td>
-                            <td>999.999.999-99</td>
-                            <td>Caragui@gmail.com</td>
-                            <td>(51)99999-9999</td>
-                            <td>Rua B</td>
-                            <td>985</td>
-                            <td>Iguain</td>
-                            <td>-</td>
-                            <td>
-                                <input type="button" value="Alterar" class="btn btn-warning mb-1">
-                                <input type="button" value="Remover" class="btn btn-danger">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Mauricio Souto</td>
-                            <td>Uruguiaio</td>
-                            <td>999.999.999-99</td>
-                            <td>Maumau@hotmail.com</td>
-                            <td>(51)99999-9999</td>
-                            <td>Rua C</td>
-                            <td>789</td>
-                            <td>Bicinho</td>
-                            <td>Casa 2</td>
-                            <td>
-                                <input type="button" value="Alterar" class="btn btn-warning mb-1">
-                                <input type="button" value="Remover" class="btn btn-danger">
-                            </td>
-                        </tr>
+
                     </tbody>
                 </table>
             </div>

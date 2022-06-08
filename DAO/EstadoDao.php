@@ -62,4 +62,13 @@ class EstadoDao
         $sql = "DELETE FROM estado WHERE estado.id = {$id}";
         Conexao::executar($sql);
     }
+
+    public static function inserirSemPais($estado)
+    {
+        $sql = "INSERT INTO estado(nome, uf)
+                VALUES ('{$estado->getNome()}',
+                '{$estado->getUf()}')";
+
+        Conexao::executar($sql);
+    }
 }

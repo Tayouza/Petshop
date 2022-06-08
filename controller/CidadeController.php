@@ -31,11 +31,3 @@ if(isset($_REQUEST['excluir'])){
     $cidade::excluir($id);
     header("Location: ../view/FrmCidade.php");
 }
-
-if(isset($_REQUEST['inserirJson'])){
-    $dados = (array) json_decode(file_get_contents("php://input"));
-    $cidade = new Cidade($dados['nome'], $dados['estado'], $dados['pais']);
-    CidadeDao::inserir($cidade);
-
-    header("Location: ../view/FrmCidade.php");
-}

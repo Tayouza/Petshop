@@ -2,15 +2,36 @@
 include_once "../DAO/Conexao.php";
 include_once "../model/CidadeModel.php";
 
-class CidadeDao
+class ClienteDao
 {
-    public static function inserir($cidade)
+    public static function inserir($cliente)
     {
-        $sql = "INSERT INTO cidade(nome, id_estado, id_pais)
-                VALUES ('{$cidade->getNome()}',
-                '{$cidade->getEstado()}',
-                '{$cidade->getPais()}')";
-
+        $sql = "INSERT INTO cliente(nome, 
+                            nacionalidade, 
+                            cpf, 
+                            email, 
+                            telefone, 
+                            cep, 
+                            endereco,
+                            numero,
+                            complemento,
+                            id_cidade,
+                            id_estado,
+                            id_pais)
+                VALUES ('{$cliente->getNome()}',
+                        '{$cliente->getNacionalidade()}',
+                        '{$cliente->getCpf()}',
+                        '{$cliente->getEmail()}',
+                        '{$cliente->getTelefone()}',
+                        '{$cliente->getCep()}',
+                        '{$cliente->getEndereco()}',
+                        '{$cliente->getNumero()}',
+                        '{$cliente->getComplemento()}',
+                        '{$cliente->getCidade()}',
+                        '{$cliente->getEstado()}',
+                        '{$cliente->getPais()}'
+                        )";
+                        
         Conexao::executar($sql);
     }
 
@@ -54,10 +75,11 @@ class CidadeDao
                 id_estado = '{$cidade->getEstado()}', 
                 id_pais = '{$cidade->getPais()}' 
                 WHERE id = {$cidade->getId()}";
-        Conexao::executar($sql);                
+        Conexao::executar($sql);
     }
 
-    public static function excluir($id){
+    public static function excluir($id)
+    {
         $sql = "DELETE FROM cidade WHERE cidade.id = {$id}";
         Conexao::executar($sql);
     }

@@ -61,4 +61,12 @@ class CidadeDao
         $sql = "DELETE FROM cidade WHERE cidade.id = {$id}";
         Conexao::executar($sql);
     }
+
+    public static function inserirSoComNome($cidade)
+    {
+        $sql = "INSERT INTO cidade(nome)
+                VALUES ('{$cidade->getNome()}')";
+
+        Conexao::executar($sql);
+    }
 }

@@ -1,15 +1,16 @@
 async function getEndereco() {
-    const inputEndereco = document.querySelector("input[name=endereco]")
+    const inputEndereco = document.querySelector("#endereco")
     const inputCidade = document.querySelector("#cidade")
     const inputEstado = document.querySelector("#estado")
     const inputPais = document.querySelector("#pais")
     let cep = cepMask.unmaskedValue
 
     cep = cep.length === 8 ? cep : "00000000"
+    
+    document.querySelector('.loading').style.display = 'grid'
 
     await fetch(`https://viacep.com.br/ws/${cep}/json/`)
         .then((response) => {
-            document.querySelector('.loading').style.display = 'grid'
             return response.json()
         })
         .then(data => {
@@ -20,12 +21,12 @@ async function getEndereco() {
                 let option = document.createElement("option")
                 option.text = data.localidade
                 inputCidade.add(option)
-                option.setAttribute('nome', data.localidade)
+                option.setAttribute('value', data.localidade)
                 option.setAttribute('selected', 'true')
             }
 
             for (index of inputCidade.children) {
-                if (index.getAttribute('nome') === data.localidade) {
+                if (index.getAttribute('value') === data.localidade) {
                     index.setAttribute("selected", "true")
                 }
             }
@@ -38,7 +39,7 @@ async function getEndereco() {
                     let option = document.createElement("option")
                     option.text = nomeEstado.nome
                     inputEstado.add(option)
-                    option.setAttribute('nome', nomeEstado.nome)
+                    option.setAttribute('value', nomeEstado.nome)
                     option.setAttribute('uf', data.uf)
                     option.setAttribute('selected', 'true')
                 }
@@ -57,7 +58,7 @@ async function getEndereco() {
                 let option = document.createElement("option")
                 option.text = 'Brasil'
                 inputPais.add(option)
-                option.setAttribute('nome', 'Brasil')
+                option.setAttribute('value', 'Brasil')
                 option.setAttribute('selected', 'true')
             }
 
@@ -75,5 +76,5 @@ async function getEndereco() {
 function inTheArr(arr, comparation) {
     let childs = Array.from(arr.children)
 
-    return childs.some((a) => a.getAttribute('nome') == comparation)
+    return childs.some((a) => a.getAttribute('value') == comparation)
 }

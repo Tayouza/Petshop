@@ -23,7 +23,7 @@ if (isset($_REQUEST['editar'])) {
     header("Location: ../view/FrmPais.php");
 }
 
-if(isset($_REQUEST['excluir'])){
+if (isset($_REQUEST['excluir'])) {
     $id = $_GET['id'];
     $pais = new PaisDao();
     $pais::excluir($id);
