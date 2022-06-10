@@ -91,11 +91,11 @@ if (isset($_REQUEST['editar'])) {
             <legend>Cadastro de estado</legend>
             <form method="POST" action="../controller/EstadoController.php?<?= $action ?>">
                 <label class="form-label">Nome: </label>
-                <input type="text" placeholder="Nome" class="form-control" value="<?= $values['nome'] ?? '' ?>" name="txtNome">
+                <input type="text" placeholder="Nome" class="form-control" value="<?= $values['nome'] ?? '' ?>" name="txtNome" required>
                 <label class="form-label">UF: </label>
-                <input type="text" class="form-control" value="<?= $values['uf'] ?? '' ?>" name="txtSigla">
+                <input type="text" placeholder="Sigla UF" class="form-control" value="<?= $values['uf'] ?? '' ?>" name="txtSigla" required>
                 <label class="form-label">País: </label>
-                <select class="form-select" name="txtPais">
+                <select class="form-select" name="txtPais" required>
                     <?php
                     foreach ($listaPais as $pais) {
                         echo "<option " . ($values['pais'] == $pais->getId() ? 'selected' : '') . " value='{$pais->getId()}'>{$pais->getNome()}</option>";
@@ -108,35 +108,37 @@ if (isset($_REQUEST['editar'])) {
         </fieldset>
     </div>
     <div class="container p-2">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>UF</th>
-                    <th>País</th>
-                    <th class="text-center">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                foreach ($listaEstados as $estado) {
-                    echo "<tr>";
-                    echo "<td> {$estado->getNome()} </td>";
-                    echo "<td> {$estado->getUf()} </td>";
-                    foreach ($listaPais as $pais) {
-                        if ($pais->getId() == $estado->getPais()) {
-                            echo "<td> {$pais->getNome()} </td>";
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr class="text-nowrap">
+                        <th>Nome</th>
+                        <th>UF</th>
+                        <th>País</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    foreach ($listaEstados as $estado) {
+                        echo "<tr class='text-nowrap'>";
+                        echo "<td> {$estado->getNome()} </td>";
+                        echo "<td> {$estado->getUf()} </td>";
+                        foreach ($listaPais as $pais) {
+                            if ($pais->getId() == $estado->getPais()) {
+                                echo "<td> {$pais->getNome()} </td>";
+                            }
                         }
+                        echo "<td class='text-center'>
+                                <a href='FrmEstado.php?editar&id={$estado->getId()}' class='btn btn-success'>Editar</a>
+                                <a local='Estado' key='{$estado->getId()}' class='btn btn-danger excluir'>Excluir</a>
+                            </td>";
+                        echo "</tr>";
                     }
-                    echo "<td class='text-center'>
-                            <a href='FrmEstado.php?editar&id={$estado->getId()}' class='btn btn-success'>Editar</a>
-                            <a local='Estado' key='{$estado->getId()}' class='btn btn-danger excluir'>Excluir</a>
-                        </td>";
-                    echo "</tr>";
-                }
-                ?>
-            </tbody>
-        </table>
+                    ?>
+                </tbody>
+            </table>
+        </div>
     </div>
     <?php
     include "templates/footer.php";

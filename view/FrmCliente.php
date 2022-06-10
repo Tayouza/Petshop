@@ -5,6 +5,23 @@ include_once "../DAO/CidadeDao.php";
 include_once "../DAO/ClienteDao.php";
 
 $action = 'inserir';
+
+if (isset($_REQUEST['editar'])) {
+    $cliente = ClienteDao::buscarId($_GET['id']);
+    $values['nome'] = $cliente->getNome();
+    $values['nacionalidade'] = $cliente->getNacionalidade();
+    $values['cpf'] = $cliente->getCpf();
+    $values['email'] = $cliente->getEmail();
+    $values['telefone'] = $cliente->getTelefone();
+    $values['cep'] = $cliente->getCep();
+    $values['endereco'] = $cliente->getEndereco();
+    $values['numero'] = $cliente->getNumero();
+    $values['complemento'] = $cliente->getComplemento();
+    $values['pais'] = $cliente->getPais();
+    $values['estado'] = $cliente->getEstado();
+    $values['cidade'] = $cliente->getCidade();
+    $action = "editar&id={$cliente->getId()}";
+}
 ?>
 
 <!DOCTYPE html>
@@ -80,24 +97,24 @@ $action = 'inserir';
     <div class="container p-2">
         <fieldset>
             <legend>Cadastro de cliente</legend>
-            <form method="POST" action="../controller/ClienteController.php?<?=$action?>">
+            <form method="POST" action="../controller/ClienteController.php?<?= $action ?>">
                 <label class="form-label">Nome: </label>
-                <input type="text" placeholder="Nome" class="form-control" name="txtNome">
+                <input type="text" value="<?= $values['nome'] ?? '' ?>" placeholder="Nome" class="form-control" name="txtNome" required>
 
                 <label class="form-label">Nacionalidade: </label>
-                <input type="text" placeholder="Nacionalidade" class="form-control" name="txtNacionalidade">
+                <input type="text" value="<?= $values['nacionalidade'] ?? '' ?>" placeholder="Nacionalidade" class="form-control" name="txtNacionalidade" required>
 
                 <label class="form-label">CPF ou Passaporte: </label>
-                <input type="text" placeholder="CPF ou Passaporte" class="form-control" name="txtCPF" id="cpf">
+                <input type="text" value="<?= $values['cpf'] ?? '' ?>" placeholder="CPF ou Passaporte" class="form-control" name="txtCPF" id="cpf" required>
 
                 <label class="form-label">E-mail: </label>
-                <input type="email" placeholder="E-mail" class="form-control" name="txtEmail">
+                <input type="email" value="<?= $values['email'] ?? '' ?>" placeholder="E-mail" class="form-control" name="txtEmail" required>
 
                 <label class="form-label">Telefone: </label>
-                <input type="tel" placeholder="Telefone" class="form-control" id="telefone" name="txtTelefone">
+                <input type="tel" value="<?= $values['telefone'] ?? '' ?>" placeholder="Telefone" class="form-control" id="telefone" name="txtTelefone" required>
 
                 <label class="form-label">CEP: (8 digitos)</label>
-                <input type="text" placeholder="CEP" id="cep" onblur="getEndereco()" class="form-control" pattern="\d{5}-?\d{3}" name="txtCep">
+                <input type="text" value="<?= $values['cep'] ?? '' ?>" placeholder="CEP" id="cep" onblur="getEndereco()" class="form-control" pattern="\d{5}-?\d{3}" name="txtCep" required>
 
                 <!--loading buscar cep-->
                 <div class="loading">
@@ -107,85 +124,92 @@ $action = 'inserir';
                 </div>
 
                 <label class="form-label">Endereço: </label>
-                <input type="text" placeholder="Endereço" name="txtEndereco" id="endereco" class="form-control">
+                <input type="text" value="<?= $values['endereco'] ?? '' ?>" placeholder="Endereço" name="txtEndereco" id="endereco" class="form-control" required>
 
                 <label class="form-label">Número: </label>
-                <input type="text" placeholder="Número" name="txtNumero" class="form-control">
-                
+                <input type="text" value="<?= $values['numero'] ?? '' ?>" placeholder="Número" name="txtNumero" class="form-control" required>
+
                 <label class="form-label">Complemento: </label>
-                <input type="text" placeholder="Complemento" name="txtComplemento" class="form-control">
+                <input type="text" value="<?= $values['complemento'] ?? '' ?>" placeholder="Complemento" name="txtComplemento" class="form-control" required>
 
                 <label class="form-label">Cidade: </label>
-                <select class="form-select" name="cidade" id="cidade">
+                <select class="form-select" name="cidade" id="cidade" required>
                     <?php
                     $listaCidade = CidadeDao::buscar();
                     foreach ($listaCidade as $cidades) {
-                        echo "<option value='{$cidades->getNome()}' nome='{$cidades->getNome()}'>{$cidades->getNome()}</option>";
+                        echo "<option " . ($values['cidade'] == $cidades->getNome() ? 'selected' : '') . " value='{$cidades->getNome()}' nome='{$cidades->getNome()}'>{$cidades->getNome()}</option>";
                     }
                     ?>
                 </select>
 
                 <label class="form-label">Estado: </label>
-                <select class="form-select" name="estado" id="estado">
+                <select class="form-select" name="estado" id="estado" required>
                     <?php
                     $listaEstado = EstadoDao::buscar();
                     foreach ($listaEstado as $estados) {
-                        echo "<option value='{$estados->getNome()}' uf='{$estados->getUf()}' nome='{$estados->getNome()}'>{$estados->getNome()}</option>";
+                        echo "<option ". ($values['estado'] == $estados->getNome() ? 'selected' : '') ." value='{$estados->getNome()}' uf='{$estados->getUf()}' nome='{$estados->getNome()}'>{$estados->getNome()}</option>";
                     }
                     ?>
                 </select>
-
+                
                 <label class="form-label">Pais: </label>
-                <select class="form-select" name="pais" id="pais">
+                <select class="form-select" name="pais" id="pais" required>
                     <?php
                     $listaPais = PaisDao::buscar();
                     foreach ($listaPais as $paises) {
-                        echo "<option value='{$paises->getNome()}'>{$paises->getNome()}</option>";
+                        echo "<option ". ($values['pais'] == $paises->getNome() ? 'selected' : '') ." value='{$paises->getNome()}'>{$paises->getNome()}</option>";
                     }
                     ?>
                 </select>
 
 
-                <a href="FrmPet.php" class="btn btn-primary my-2">Cadastre o seu Pet</a>
+                <a href="FrmPet.php" class="btn btn-primary my-3">Cadastre o seu Pet</a>
                 <input type="reset" value="Limpar" class="btn btn-warning">
-                <input type="submit" value="Cadastrar" class="btn btn-success">
+                <input type="submit" value="<?= isset($_REQUEST['editar']) ? 'Editar' : 'Cadastrar' ?>" class="btn btn-success">
             </form>
         </fieldset>
         <fieldset>
             <legend>Dados recém cadastrados</legend>
-            <div class="overflow-auto">
+            <div class="table-responsive">
                 <table class="table table-striped table-hover table-bordered">
                     <thead>
-                        <tr>
+                        <tr class="text-nowrap">
                             <th>Nome</th>
                             <th>Nacionalidade</th>
                             <th>CPF ou Passaporte</th>
                             <th>E-mail</th>
                             <th>Telefone</th>
+                            <th>Cep</th>
                             <th>Endereço</th>
                             <th>Número</th>
                             <th>Complemento</th>
                             <th>Cidade</th>
                             <th>Estado</th>
                             <th>Pais</th>
+                            <th class="text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
                         $listaCliente = ClienteDao::buscar();
-                        foreach($listaCliente as $cliente){
-                            echo '<tr>';
-                                echo "<td>{$cliente->getNome()}</td>";
-                                echo "<td>{$cliente->getNacionalidade()}</td>";
-                                echo "<td>{$cliente->getCpf()}</td>";
-                                echo "<td>{$cliente->getEmail()}</td>";
-                                echo "<td>{$cliente->getTelefone()}</td>";
-                                echo "<td>{$cliente->getEndereco()}</td>";
-                                echo "<td>{$cliente->getNumero()}</td>";
-                                echo "<td>{$cliente->getComplemento()}</td>";
-                                echo "<td>{$cliente->getCidade()}</td>";
-                                echo "<td>{$cliente->getEstado()}</td>";
-                                echo "<td>{$cliente->getPais()}</td>";
+                        foreach ($listaCliente as $cliente) {
+                            echo '<tr class="text-nowrap">';
+                            echo "<td>{$cliente->getNome()}</td>";
+                            echo "<td>{$cliente->getNacionalidade()}</td>";
+                            echo "<td>{$cliente->getCpf()}</td>";
+                            echo "<td>{$cliente->getEmail()}</td>";
+                            echo "<td>{$cliente->getTelefone()}</td>";
+                            echo "<td>{$cliente->getCep()}</td>";
+                            echo "<td>{$cliente->getEndereco()}</td>";
+                            echo "<td>{$cliente->getNumero()}</td>";
+                            echo "<td>{$cliente->getComplemento()}</td>";
+                            echo "<td>{$cliente->getCidade()}</td>";
+                            echo "<td>{$cliente->getEstado()}</td>";
+                            echo "<td>{$cliente->getPais()}</td>";
+                            echo "<td class='text-center'>
+                                    <a href='FrmCliente.php?editar&id={$cliente->getId()}' class='btn btn-success'>Editar</a>
+                                    <a local='Cliente' key='{$cliente->getId()}' class='btn btn-danger excluir'>Excluir</a>
+                                </td>";
                             echo '</tr>';
                         }
                         ?>

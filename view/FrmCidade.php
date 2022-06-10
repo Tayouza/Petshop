@@ -8,11 +8,11 @@ $listaEstados = EstadoDao::buscar();
 $listaPais = PaisDao::buscar();
 $listaCidades = CidadeDao::buscar();
 
-if(isset($_REQUEST['editar'])){
+if (isset($_REQUEST['editar'])) {
     $cidadeId = CidadeDao::buscarId($_GET['id']);
-    $values['nome'] = $cidadeId->getNome(); 
-    $values['estado'] = $cidadeId->getEstado(); 
-    $values['pais'] = $cidadeId->getPais(); 
+    $values['nome'] = $cidadeId->getNome();
+    $values['estado'] = $cidadeId->getEstado();
+    $values['pais'] = $cidadeId->getPais();
     $action = "editar&id={$cidadeId->getId()}";
 }
 
@@ -92,13 +92,13 @@ if(isset($_REQUEST['editar'])){
             <legend>Cadastro de cidade</legend>
             <form method="POST" action="../controller/CidadeController.php?<?= $action ?>">
                 <label class="form-label">Nome: </label>
-                <input type="text" value="<?= $values['nome'] ?? ''?>" placeholder="Nome" class="form-control" name="txtNome">
+                <input type="text" value="<?= $values['nome'] ?? '' ?>" placeholder="Nome" class="form-control" name="txtNome" required>
                 <label class="form-label">Estado: </label>
-                <select class="form-select" name="txtEstado">
+                <select class="form-select" name="txtEstado" required>
                     <?php
                     $listaEstado = EstadoDao::buscar();
                     foreach ($listaEstado as $estados) {
-                        echo "<option ".(isset($values) ?? ($values['estado'] == $estados->getId() ? 'selected' : ''))." value='{$estados->getId()}'>{$estados->getNome()}</option>";
+                        echo "<option " . (isset($values) ?? ($values['estado'] == $estados->getId() ? 'selected' : '')) . " value='{$estados->getId()}'>{$estados->getNome()}</option>";
                     }
                     ?>
                 </select>
@@ -107,50 +107,52 @@ if(isset($_REQUEST['editar'])){
                     <?php
                     $listaPais = PaisDao::buscar();
                     foreach ($listaPais as $paises) {
-                        echo "<option ".(isset($values) ?? ($values['pais'] == $paises->getId() ? 'selected' : ''))." value='{$paises->getId()}'>{$paises->getNome()}</option>";
+                        echo "<option " . (isset($values) ?? ($values['pais'] == $paises->getId() ? 'selected' : '')) . " value='{$paises->getId()}'>{$paises->getNome()}</option>";
                     }
                     ?>
                 </select>
                 <br>
                 <input type="reset" value="Limpar" class="btn btn-warning">
-                <input type="submit" value="<?=isset($_REQUEST['editar']) ? 'Editar' : 'Cadastrar'?>" class="btn btn-success">
+                <input type="submit" value="<?= isset($_REQUEST['editar']) ? 'Editar' : 'Cadastrar' ?>" class="btn btn-success">
             </form>
         </fieldset>
     </div>
     <div class="container p-2">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>UF</th>
-                    <th>País</th>
-                    <th class="text-center">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                foreach ($listaCidades as $cidade) {
-                    echo "<tr>";
-                    echo "<td> {$cidade->getNome()} </td>";
-                    foreach ($listaEstado as $estado) {
-                        if ($estado->getId() == $cidade->getEstado()) {
-                            echo "<td> {$estado->getNome()} </td>";
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr class="text-nowrap">
+                        <th>Nome</th>
+                        <th>Estado</th>
+                        <th>País</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    foreach ($listaCidades as $cidade) {
+                        echo "<tr class='text-nowrap'>";
+                        echo "<td> {$cidade->getNome()} </td>";
+                        foreach ($listaEstado as $estado) {
+                            if ($estado->getId() == $cidade->getEstado()) {
+                                echo "<td> {$estado->getNome()} </td>";
+                            }
                         }
-                    }
-                    foreach ($listaPais as $pais) {
-                        if ($pais->getId() == $cidade->getPais()) {
-                            echo "<td> {$pais->getNome()} </td>";
+                        foreach ($listaPais as $pais) {
+                            if ($pais->getId() == $cidade->getPais()) {
+                                echo "<td> {$pais->getNome()} </td>";
+                            }
                         }
-                    }
-                    echo "<td class='text-center'>
+                        echo "<td class='text-center'>
                             <a href='FrmCidade.php?editar&id={$cidade->getId()}' class='btn btn-success'>Editar</a>
                             <a local='Cidade' key='{$cidade->getId()}' class='btn btn-danger excluir'>Excluir</a>
                         </td>";
-                    echo "</tr>";
-                }
-                ?>
-            </tbody>
-        </table>
+                        echo "</tr>";
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </div>
     </div>
     <?php
     include "templates/footer.php";

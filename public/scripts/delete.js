@@ -4,6 +4,7 @@ inputExcluir.forEach(element => {
     element.onclick = () => {
         id = element.getAttribute('key')
         local = element.getAttribute('local')
+        console.log(local);
         swal({
             title: "Você tem certeza?",
             text: "Esta ação é irreversível",

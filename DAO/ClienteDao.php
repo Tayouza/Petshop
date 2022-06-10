@@ -27,9 +27,9 @@ class ClienteDao
                         '{$cliente->getEndereco()}',
                         '{$cliente->getNumero()}',
                         '{$cliente->getComplemento()}',
-                        '{$cliente->getCidade()}',
-                        '{$cliente->getEstado()}',
-                        '{$cliente->getPais()}'
+                        '{$cliente->getCidadeId()}',
+                        '{$cliente->getEstadoId()}',
+                        '{$cliente->getPaisId()}'
                         )";
 
         Conexao::executar($sql);
@@ -37,7 +37,13 @@ class ClienteDao
 
     public static function buscar()
     {
-        $sql = "SELECT * FROM cliente";
+        $sql = "SELECT cli.*, cid.nome AS nome_cidade,
+                es.nome AS nome_estado, 
+                pais.nome AS nome_pais FROM cliente AS cli 
+                INNER JOIN cidade AS cid ON cid.id = cli.id_cidade 
+                INNER JOIN estado AS es ON es.id = cli.id_estado 
+                INNER JOIN pais ON pais.id = cli.id_pais;";
+
         $result = Conexao::consultar($sql);
         $lista = new ArrayObject();
         if ($result != null) {
@@ -53,6 +59,9 @@ class ClienteDao
                     $_endereco,
                     $_numero,
                     $_complemento,
+                    $_idCidade,
+                    $_idEstado,
+                    $_idPais,
                     $_cidade,
                     $_estado,
                     $_pais
@@ -60,21 +69,21 @@ class ClienteDao
                 =
                 mysqli_fetch_row($result)
             ) {
-                $cidade = new Cliente();
-                $cidade->setId($_id);
-                $cidade->setNome($_nome);
-                $cidade->setNacionalidade($_nacionalidade);
-                $cidade->setCpf($_cpf);
-                $cidade->setEmail($_email);
-                $cidade->setTelefone($_telefone);
-                $cidade->setCep($_cep);
-                $cidade->setEndereco($_endereco);
-                $cidade->setNumero($_numero);
-                $cidade->setComplemento($_complemento);
-                $cidade->setCidade($_cidade);
-                $cidade->setEstado($_estado);
-                $cidade->setPais($_pais);
-                $lista->append($cidade);
+                $cliente = new Cliente();
+                $cliente->setId($_id);
+                $cliente->setNome($_nome);
+                $cliente->setNacionalidade($_nacionalidade);
+                $cliente->setCpf($_cpf);
+                $cliente->setEmail($_email);
+                $cliente->setTelefone($_telefone);
+                $cliente->setCep($_cep);
+                $cliente->setEndereco($_endereco);
+                $cliente->setNumero($_numero);
+                $cliente->setComplemento($_complemento);
+                $cliente->setCidade($_cidade);
+                $cliente->setEstado($_estado);
+                $cliente->setPais($_pais);
+                $lista->append($cliente);
             }
         }
         return $lista;
@@ -82,32 +91,79 @@ class ClienteDao
 
     public static function buscarId($id)
     {
-        $sql = "SELECT id, nome, id_estado, id_pais FROM cidade WHERE id = {$id}";
+        $sql = "SELECT cli.*, cid.nome AS nome_cidade,
+                es.nome AS nome_estado, 
+                pais.nome AS nome_pais FROM cliente AS cli  
+                INNER JOIN cidade AS cid ON cid.id = cli.id_cidade 
+                INNER JOIN estado AS es ON es.id = cli.id_estado 
+                INNER JOIN pais ON pais.id = cli.id_pais
+                WHERE cli.id = {$id};";
+
         $result = Conexao::consultar($sql);
+        $lista = new ArrayObject();
         if ($result != null) {
-            list($_id, $_nome, $_estado, $_pais) = mysqli_fetch_row($result);
-            $cidade = new cidade();
-            $cidade->setId($_id);
-            $cidade->setNome($_nome);
-            $cidade->setEstado($_estado);
-            $cidade->setPais($_pais);
+            while (
+                list(
+                    $_id,
+                    $_nome,
+                    $_nacionalidade,
+                    $_cpf,
+                    $_email,
+                    $_telefone,
+                    $_cep,
+                    $_endereco,
+                    $_numero,
+                    $_complemento,
+                    $_idCidade,
+                    $_idEstado,
+                    $_idPais,
+                    $_cidade,
+                    $_estado,
+                    $_pais
+                )
+                =
+                mysqli_fetch_row($result)
+            ) {
+                $cliente = new Cliente();
+                $cliente->setId($_id);
+                $cliente->setNome($_nome);
+                $cliente->setNacionalidade($_nacionalidade);
+                $cliente->setCpf($_cpf);
+                $cliente->setEmail($_email);
+                $cliente->setTelefone($_telefone);
+                $cliente->setCep($_cep);
+                $cliente->setEndereco($_endereco);
+                $cliente->setNumero($_numero);
+                $cliente->setComplemento($_complemento);
+                $cliente->setCidade($_cidade);
+                $cliente->setEstado($_estado);
+                $cliente->setPais($_pais);
+            }
         }
-        return $cidade;
+        return $cliente;
     }
 
-    public static function editar($cidade)
+    public static function editar($cliente)
     {
-        $sql = "UPDATE cidade SET 
-                nome = '{$cidade->getNome()}', 
-                id_estado = '{$cidade->getEstado()}', 
-                id_pais = '{$cidade->getPais()}' 
-                WHERE id = {$cidade->getId()}";
+        $sql = "UPDATE cliente SET 
+                nome = '{$cliente->getNome()}',
+                nacionalidade = '{$cliente->getNacionalidade()}',
+                cpf = '{$cliente->getCpf()}',
+                email = '{$cliente->getEmail()}',
+                telefone = '{$cliente->getTelefone()}',
+                cep = '{$cliente->getCep()}',
+                endereco = '{$cliente->getEndereco()}',
+                complemento = '{$cliente->getComplemento()}',
+                id_cidade = '{$cliente->getCidadeId()}',
+                id_estado = '{$cliente->getEstadoId()}', 
+                id_pais = '{$cliente->getPaisId()}' 
+                WHERE id = {$cliente->getId()}";
         Conexao::executar($sql);
     }
 
     public static function excluir($id)
     {
-        $sql = "DELETE FROM cidade WHERE cidade.id = {$id}";
+        $sql = "DELETE FROM cliente WHERE cliente.id = {$id}";
         Conexao::executar($sql);
     }
 }

@@ -5,21 +5,25 @@ require "../DAO/PaisDao.php";
 
 if (isset($_REQUEST['inserir'])) {
 
-    $nome = $_POST['txtNome'];
-    $sigla = $_POST['txtSigla'];
+    if (!empty($_POST['txtNome'] && !empty($_POST['txtSigla']))) {
+        $nome = $_POST['txtNome'];
+        $sigla = $_POST['txtSigla'];
 
-    $pais = new Pais($nome, $sigla);
-    PaisDao::inserir($pais);
+        $pais = new Pais($nome, $sigla);
+        PaisDao::inserir($pais);
+    }
 
     header("Location: ../view/FrmPais.php");
 }
 
 if (isset($_REQUEST['editar'])) {
-    $pais = new Pais();
-    $pais->setNome($_POST['txtNome']);
-    $pais->setSigla($_POST['txtSigla']);
-    $pais->setId($_GET['id']);
-    PaisDao::editar($pais);
+    if (!empty($_POST['txtNome'] && !empty($_POST['txtSigla']))) {
+        $pais = new Pais();
+        $pais->setNome($_POST['txtNome']);
+        $pais->setSigla($_POST['txtSigla']);
+        $pais->setId($_GET['id']);
+        PaisDao::editar($pais);
+    }
     header("Location: ../view/FrmPais.php");
 }
 

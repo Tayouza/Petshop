@@ -22,6 +22,9 @@ class Cliente
     private $cidade;
     private $estado;
     private $pais;
+    private $idCidade;
+    private $idEstado;
+    private $idPais;
 
     public function __construct(
         $nome = null,
@@ -248,9 +251,9 @@ class Cliente
     /**
      * Get the value of cidade
      */
-    public function getCidade()
+    public function getCidadeId()
     {
-        return $this->cidade;
+        return $this->idCidade;
     }
 
     /**
@@ -258,17 +261,70 @@ class Cliente
      *
      * @return  self
      */
-    public function setCidade($cidade)
+    public function setCidadeNome($cidade, $estado = null, $pais = null)
     {
         $getCidade = $this->getDadosEFiltrar($cidade, new CidadeDao); //Procura a chave do array correspondente ao pais no banco
 
-        if(!$getCidade){ //se não estiver no banco recebe false e ! pra inverter
-            $novaCidade = new Cidade($cidade);
-            CidadeDao::inserirSoComNome($novaCidade);
+        if(!$getCidade && isset($estado) && isset($pais)){ //se não estiver no banco recebe false e ! pra inverter
+            $getEstado = $this->getDadosEFiltrar($estado, new EstadoDao);
+            $getPais = $this->getDadosEFiltrar($pais, new PaisDao);
+            $novaCidade = new Cidade($cidade, $getEstado->getId(), $getPais->getId());
+            CidadeDao::inserir($novaCidade);
             $getCidade = $this->getDadosEFiltrar($cidade, new CidadeDao);
         }
 
-        $this->cidade = $getCidade->getId();
+        $this->idCidade = $getCidade->getId();
+
+        return $this;
+    }
+
+    /**
+     * Get the value of cidade
+     */
+    public function getCidade()
+    {
+        return $this->cidade;
+    }
+
+    /**
+     * Set the value of pais
+     *
+     * @return  self
+     */ 
+    public function setCidade($cidade)
+    {
+        $this->cidade = $cidade;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of estado
+     */
+    public function getEstadoId()
+    {
+        return $this->idEstado;
+    }
+
+    /**
+     * Set the value of estado
+     *
+     * @return  self
+     */
+    public function setEstadoNome($estado, $uf = null, $pais = null)
+    {
+        $getEstado = $this->getDadosEFiltrar($estado, new EstadoDao); //Procura a chave do array correspondente ao pais no banco
+
+        if(!$getEstado && isset($uf) && isset($pais)){ //se não estiver no banco recebe false e ! pra inverter
+            $getPais = $this->getDadosEFiltrar($pais, new PaisDao);
+            $novoEstado = new Estado($estado);
+            $novoEstado->setUf($uf);
+            $novoEstado->setPais($getPais->getId());
+            EstadoDao::inserir($novoEstado);
+            $getEstado = $this->getDadosEFiltrar($estado, new EstadoDao);
+        }
+        
+        $this->idEstado = $getEstado->getId();
 
         return $this;
     }
@@ -282,21 +338,43 @@ class Cliente
     }
 
     /**
-     * Set the value of estado
+     * Set the value of pais
+     *
+     * @return  self
+     */ 
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of pais
+     */
+    public function getPaisId()
+    {
+        return $this->idPais;
+    }
+
+    /**
+     * Set the value of pais
      *
      * @return  self
      */
-    public function setEstado($estado)
+    public function setPaisNome($pais)
     {
-        $getEstado = $this->getDadosEFiltrar($estado, new EstadoDao); //Procura a chave do array correspondente ao pais no banco
+        $getPais = $this->getDadosEFiltrar($pais, new PaisDao); //Procura a chave do array correspondente ao pais no banco
 
-        if(!$getEstado){ //se não estiver no banco recebe false e ! pra inverter
-            $novoEstado = new Estado($estado);
-            EstadoDao::inserirSoComNome($novoEstado);
-            $getEstado = $this->getDadosEFiltrar($estado, new EstadoDao);
+        if(!$getPais){ //se não estiver no banco recebe false e ! pra inverter
+            $novoPais = new Pais();
+            $novoPais->setNome($pais);
+            $novoPais->setSigla(strtoupper(str_split($pais, 2)[0]));
+            PaisDao::inserir($novoPais);
+            $getPais = $this->getDadosEFiltrar($pais, new PaisDao);
         }
 
-        $this->estado = $getEstado->getId();
+        $this->idPais = $getPais->getId();
 
         return $this;
     }
@@ -313,23 +391,21 @@ class Cliente
      * Set the value of pais
      *
      * @return  self
-     */
+     */ 
     public function setPais($pais)
     {
-        $getPais = $this->getDadosEFiltrar($pais, new PaisDao); //Procura a chave do array correspondente ao pais no banco
-
-        if(!$getPais){ //se não estiver no banco recebe false e ! pra inverter
-            $novoPais = new Pais();
-            $novoPais->setNome($pais);
-            $novoPais->setSigla(strtoupper(str_split($pais, 2)[0]));
-            PaisDao::inserir($novoPais);
-            $getPais = $this->getDadosEFiltrar($pais, new PaisDao);
-        }
-
-        $this->pais = $getPais->getId();
+        $this->pais = $pais;
 
         return $this;
     }
+
+    /**
+     * Set the value of pais
+     *
+     * @return  DAO
+     * ou
+     * @return  boll
+     */ 
 
     public function getDadosEFiltrar($nome, $dao){
         $lista = (array) $dao::buscar();

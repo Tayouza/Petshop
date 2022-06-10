@@ -3,7 +3,7 @@ async function getEndereco() {
     const inputCidade = document.querySelector("#cidade")
     const inputEstado = document.querySelector("#estado")
     const inputPais = document.querySelector("#pais")
-    let cep = cepMask.unmaskedValue
+    let cep = cepMask.unmaskedValue || ''
 
     cep = cep.length === 8 ? cep : "00000000"
     
@@ -42,6 +42,14 @@ async function getEndereco() {
                     option.setAttribute('value', nomeEstado.nome)
                     option.setAttribute('uf', data.uf)
                     option.setAttribute('selected', 'true')
+
+                    let uf = document.createElement('input')
+                    uf.setAttribute('type', 'hidden')
+                    uf.setAttribute('name', 'txtUf')
+                    uf.setAttribute('id', 'ufEstado')
+                    uf.setAttribute('value', nomeEstado.sigla)
+                    let form = document.querySelector('form')
+                    form.append(uf)
                 }
 
             }

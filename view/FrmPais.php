@@ -88,9 +88,9 @@ if (isset($_REQUEST['editar'])) {
             <legend>Cadastro de país</legend>
             <form method="POST" action="../controller/PaisController.php?<?= $action ?>">
                 <label class="form-label">Nome: </label>
-                <input type="text" value="<?= $values['nome'] ?? ''?>" placeholder="Nome" class="form-control" name="txtNome">
+                <input type="text" value="<?= $values['nome'] ?? ''?>" placeholder="Nome" class="form-control" name="txtNome" required>
                 <label class="form-label">Sigla: </label>
-                <input type="text" value="<?= $values['sigla'] ?? ''?>" class="form-control" name="txtSigla" placeholder="Sigla">
+                <input type="text" value="<?= $values['sigla'] ?? ''?>" class="form-control" name="txtSigla" placeholder="Sigla" required>
                 <input type="reset" value="Limpar" class="btn btn-warning my-2">
                 <input type="submit" value="<?=isset($_REQUEST['editar']) ? 'Editar' : 'Cadastrar'?>" class="btn btn-success">
             </form>

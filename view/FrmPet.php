@@ -1,5 +1,16 @@
+<?php
+
+include_once "../DAO/ClienteDao.php";
+include_once "../DAO/PetDao.php";
+
+$action = 'inserir';
+$listaClientes = ClienteDao::buscar();
+
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,6 +18,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <title>Cadastro de Pet</title>
 </head>
+
 <body>
     <header>
         <nav class="navbar navbar-expand-xxl navbar-light bg-light">
@@ -15,8 +27,7 @@
                     <img src="../assets/logo.jpg" style="border-radius: 50%;" width="100px" alt="">
                 </a>
                 <h1><a href="../index.php" class="d-xxl-none" style="text-decoration: none; color: black">Petshop Tay</a></h1>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
@@ -69,21 +80,27 @@
     <div class="container">
         <fieldset>
             <legend>Cadastro de pet</legend>
-            <form>
+            <form method="POST" action="../controller/PetController.php?<?= $action ?>">
                 <label class="form-label">Nome: </label>
-                <input type="text" placeholder="Nome" class="form-control">
+                <input type="text" placeholder="Nome" class="form-control" name="txtNome">
                 <label class="form-label">Tutor: </label>
-                <input type="search" placeholder="Tutor" class="form-control">
+                <select class="form-select" name="txtTutor">
+                    <?php
+                    foreach ($listaClientes as $clientes) {
+                        echo "<option value='{$clientes->getId()}'>{$clientes->getNome()}</option> ";
+                    }
+                    ?>
+                </select>
                 <label class="form-label">Raça: </label>
-                <input type="text" placeholder="Raça" class="form-control">
+                <input type="text" placeholder="Raça" class="form-control" name="txtRaca">
                 <label class="form-label">Idade: </label>
-                <input type="text" placeholder="Idade" class="form-control">
-                <label  class="form-label">Informaçõe adicionais: </label>
-                <textarea placeholder="Informações adicionais" class="form-control"></textarea>
+                <input type="text" placeholder="Idade" class="form-control" name="txtIdade">
+                <label class="form-label">Informações adicionais: </label>
+                <textarea placeholder="Informações adicionais" class="form-control" name="infos"></textarea>
                 <input type="reset" value="Limpar" class="btn btn-warning mt-2">
                 <input type="submit" value="Cadastrar" class="btn btn-success mt-2">
             </form>
-        </fieldset>    
+        </fieldset>
         <fieldset>
             <legend>Dados recém cadastrados</legend>
             <div class="overflow-auto">
@@ -95,42 +112,28 @@
                             <th>Raça</th>
                             <th>Idade</th>
                             <th>Informações adicionais</th>
+                            <th class="text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Juninho</td>
-                            <td>Taylor</td>
-                            <td>Boder</td>
-                            <td>3 meses</td>
-                            <td>Pelo branco</td>
-                            <td>
-                                <input type="button" value="Alterar" class="btn btn-warning">
-                                <input type="button" value="Remover" class="btn btn-danger">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Otaviano</td>
-                            <td>Carlinho</td>
-                            <td>Pitbull</td>
-                            <td>2 anos</td>
-                            <td>Brabo</td>
-                            <td>
-                                <input type="button" value="Alterar" class="btn btn-warning">
-                                <input type="button" value="Remover" class="btn btn-danger">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Amadeus</td>
-                            <td>Mauricio</td>
-                            <td>Pinscher</td>
-                            <td>8 anos</td>
-                            <td>Dócil</td>
-                            <td>
-                                <input type="button" value="Alterar" class="btn btn-warning">
-                                <input type="button" value="Remover" class="btn btn-danger">
-                            </td>
-                        </tr>
+                        <?php
+                        $listaPets = PetDao::buscar();
+                        foreach ($listaPets as $pets) {
+                            echo "
+                                <tr>
+                                    <td>{$pets->getNome()}</td>
+                                    <td>{$pets->getTutor()}</td>
+                                    <td>{$pets->getRaca()}</td>
+                                    <td>{$pets->getIdade()}</td>
+                                    <td>{$pets->getInfos()}</td>
+                                    <td class='text-center'>
+                                        <a href='FrmPet.php?editar&id={$pets->getId()}' class='btn btn-success'>Editar</a>
+                                        <a local='Pet' key='{$pets->getId()}' class='btn btn-danger excluir'>Excluir</a>
+                                    </td>
+                                </tr>
+                            ";
+                        }
+                        ?>
                     </tbody>
                 </table>
             </div>
