@@ -130,7 +130,7 @@ if (isset($_REQUEST['editar'])) {
                 <input type="text" value="<?= $values['numero'] ?? '' ?>" placeholder="Número" name="txtNumero" class="form-control" required>
 
                 <label class="form-label">Complemento: </label>
-                <input type="text" value="<?= $values['complemento'] ?? '' ?>" placeholder="Complemento" name="txtComplemento" class="form-control" required>
+                <input type="text" value="<?= $values['complemento'] ?? '' ?>" placeholder="Complemento" name="txtComplemento" class="form-control">
 
                 <label class="form-label">Cidade: </label>
                 <select class="form-select" name="cidade" id="cidade" required>

@@ -6,6 +6,16 @@ include_once "../DAO/PetDao.php";
 $action = 'inserir';
 $listaClientes = ClienteDao::buscar();
 
+if (isset($_REQUEST['editar'])) {
+    $petId = PetDao::buscarId($_GET['id']);
+    $values['nome'] = $petId->getNome();
+    $values['tutor'] = $petId->getTutor();
+    $values['raca'] = $petId->getRaca();
+    $values['idade'] = $petId->getIdade();
+    $values['infos'] = $petId->getInfos();
+    $action = "editar&id={$petId->getId()}";
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -82,21 +92,21 @@ $listaClientes = ClienteDao::buscar();
             <legend>Cadastro de pet</legend>
             <form method="POST" action="../controller/PetController.php?<?= $action ?>">
                 <label class="form-label">Nome: </label>
-                <input type="text" placeholder="Nome" class="form-control" name="txtNome">
+                <input type="text" value="<?= $values['nome'] ?? '' ?>" placeholder="Nome" class="form-control" name="txtNome">
                 <label class="form-label">Tutor: </label>
                 <select class="form-select" name="txtTutor">
                     <?php
                     foreach ($listaClientes as $clientes) {
-                        echo "<option value='{$clientes->getId()}'>{$clientes->getNome()}</option> ";
+                        echo "<option ". ($values['tutor'] == $clientes->getNome() ? 'selected' : '') ." value='{$clientes->getId()}'>{$clientes->getNome()}</option> ";
                     }
                     ?>
                 </select>
                 <label class="form-label">Raça: </label>
-                <input type="text" placeholder="Raça" class="form-control" name="txtRaca">
+                <input type="text" value="<?= $values['raca'] ?? '' ?>" placeholder="Raça" class="form-control" name="txtRaca">
                 <label class="form-label">Idade: </label>
-                <input type="text" placeholder="Idade" class="form-control" name="txtIdade">
+                <input type="text" value="<?= $values['idade'] ?? '' ?>" placeholder="Idade" class="form-control" name="txtIdade">
                 <label class="form-label">Informações adicionais: </label>
-                <textarea placeholder="Informações adicionais" class="form-control" name="infos"></textarea>
+                <textarea placeholder="Informações adicionais" class="form-control" name="infos"><?= $values['infos'] ?? '' ?></textarea>
                 <input type="reset" value="Limpar" class="btn btn-warning mt-2">
                 <input type="submit" value="Cadastrar" class="btn btn-success mt-2">
             </form>
