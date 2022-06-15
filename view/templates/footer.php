@@ -6,6 +6,7 @@
 <script src="../public/scripts/delete.js"></script>
 <script src="../public/scripts/mask.js"></script>
 <script src="../public/scripts/viacep.js"></script>
+<script src="../public/scripts/check.js"></script>
 
 </body>
 

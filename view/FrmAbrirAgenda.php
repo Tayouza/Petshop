@@ -1,22 +1,14 @@
 <?php
 
-$action = 'inserir';
-include_once "../DAO/PaisDao.php";
-include_once "../DAO/EstadoDao.php";
-include_once "../model/EstadoModel.php";
+include_once '../controller/AbrirAgendaController.php';
+include_once '../DAO/AbrirAgendaDao.php';
+include_once '../model/AbrirAgendaModel.php';
 
+/*$value = AbrirAgendaDao::buscarPorHora('13:00');
+var_dump($value);*/
 
-$listaEstados = EstadoDao::buscar();
-$listaPais = PaisDao::buscar();
-
-if (isset($_REQUEST['editar'])) {
-    $estadoId = EstadoDao::buscarId($_GET['id']);
-    $values['nome'] = $estadoId->getNome();
-    $values['uf'] = $estadoId->getUf();
-    $values['pais'] = $estadoId->getPais();
-    $action = "editar&id={$estadoId->getId()}";
-}
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -25,7 +17,8 @@ if (isset($_REQUEST['editar'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <title>Cadastro de Estado</title>
+    <link rel="stylesheet" href="../public/css/horarios.css">
+    <title>Abrir Agenda</title>
 </head>
 
 <body>
@@ -83,7 +76,7 @@ if (isset($_REQUEST['editar'])) {
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="FrmAbrirAgenda.php">
-                            <ion-icon name="list-outline"></ion-icon> Abrir Agenda
+                                <ion-icon name="list-outline"></ion-icon> Abrir Agenda
                             </a>
                         </li>
                     </ul>
@@ -93,56 +86,53 @@ if (isset($_REQUEST['editar'])) {
     </header>
     <div class="container p-2">
         <fieldset>
-            <legend>Cadastro de estado</legend>
-            <form method="POST" action="../controller/EstadoController.php?<?= $action ?>">
-                <label class="form-label">Nome: </label>
-                <input type="text" placeholder="Nome" class="form-control" value="<?= $values['nome'] ?? '' ?>" name="txtNome" required>
-                <label class="form-label">UF: </label>
-                <input type="text" placeholder="Sigla UF" class="form-control" value="<?= $values['uf'] ?? '' ?>" name="txtSigla" required>
-                <label class="form-label">País: </label>
-                <select class="form-select" name="txtPais" required>
+            <legend>Editar Agenda</legend>
+            <form action="../controller/AbrirAgendaController.php?inserir" method="POST">
+                <label class="form-label">Novas datas e horários</label>
+                <input type="date" name="txtData" id="data" class="form-control mb-2">
+                <label class="form-label">Dia todo</label>
+                <input type="checkbox" name="diaTodo" id="diaTodo" value="sim" checked>
+                <input type="time" name="txtHora" id="hora" class="form-control mb-2">
+                <input type="submit" value="Abrir" class="btn btn-success">
+            </form>
+
+            <form action="./FrmAbrirAgenda.php?selecionar" method="GET" class="mt-4">
+                <label class="form-label">Fechar data e horário</label>
+                <select name="txtFecharData" id="fecharData" class="form-select mb-2">
                     <?php
-                    foreach ($listaPais as $pais) {
-                        echo "<option " . ($values['pais'] == $pais->getId() ? 'selected' : '') . " value='{$pais->getId()}'>{$pais->getNome()}</option>";
+                    $listaDatas = AbrirAgendaDao::buscar();
+                    foreach ($listaDatas as $datas) {
+                        echo "<option value='{$datas->getId()}'>";
+                        echo $datas->getDataFormatada();
+                        echo '</option>';
                     }
                     ?>
                 </select>
-                <input type="reset" value="Limpar" class="btn btn-warning">
-                <input type="submit" value="<?= isset($values) ? 'Editar' : 'Cadastrar'  ?>" class="btn btn-success my-2">
+                <input type="submit" value="Selecionar dia" class="btn btn-primary">
             </form>
         </fieldset>
-    </div>
-    <div class="container p-2">
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr class="text-nowrap">
-                        <th>Nome</th>
-                        <th>UF</th>
-                        <th>País</th>
-                        <th class="text-center">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    foreach ($listaEstados as $estado) {
-                        echo "<tr class='text-nowrap'>";
-                        echo "<td> {$estado->getNome()} </td>";
-                        echo "<td> {$estado->getUf()} </td>";
-                        foreach ($listaPais as $pais) {
-                            if ($pais->getId() == $estado->getPais()) {
-                                echo "<td> {$pais->getNome()} </td>";
-                            }
-                        }
-                        echo "<td class='text-center'>
-                                <a href='FrmEstado.php?editar&id={$estado->getId()}' class='btn btn-success'>Editar</a>
-                                <a local='Estado' key='{$estado->getId()}' class='btn btn-danger excluir'>Excluir</a>
-                            </td>";
-                        echo "</tr>";
-                    }
-                    ?>
-                </tbody>
-            </table>
+        <div class="horarios">
+            <?php
+            if (isset($_GET['txtFecharData'])) :
+                $listaHorarios = AbrirAgendaDao::buscarHorarios($_GET['txtFecharData']);
+                foreach ($listaHorarios as $horarios) :
+            ?>
+                    <div class="horario">
+                        <span local="AbrirAgenda" key="<?= $horarios->getId() ?>" class="excluir">X</span>
+                        <span><?= $horarios->getHora() ?></span>
+                    </div>
+
+                <?php
+                endforeach;
+                ?>
+
+                <div class="horario">
+                    <span local="AbrirAgenda" key="data-<?=$_GET['txtFecharData']?>" class="excluir">X</span>
+                    <span>Todos Horarios</span>
+                </div>
+            <?php
+            endif;
+            ?>
         </div>
     </div>
     <?php

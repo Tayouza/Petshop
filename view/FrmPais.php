@@ -78,6 +78,11 @@ if (isset($_REQUEST['editar'])) {
                                 <ion-icon name="information-circle"></ion-icon> informações sobre agendamento
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="FrmAbrirAgenda.php">
+                            <ion-icon name="list-outline"></ion-icon> Abrir Agenda
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>

@@ -1,0 +1,19 @@
+.horarios{
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+}
+
+.horario{
+    border-radius: 5px;
+    background-color: #444;
+    color: white;
+    padding: 5px;
+    position: relative;
+}
+
+.horario span:first-child{
+    cursor: pointer;
+    color: tomato;
+}

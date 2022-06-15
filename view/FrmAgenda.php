@@ -1,3 +1,11 @@
+<?php
+
+include_once "../DAO/PetDao.php";
+
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -63,6 +71,11 @@
                                 <ion-icon name="information-circle"></ion-icon> informações sobre agendamento
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="FrmAbrirAgenda.php">
+                            <ion-icon name="list-outline"></ion-icon> Abrir Agenda
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -73,7 +86,14 @@
             <legend>Agenda</legend>
             <form>
                 <label class="form-label">Nome: </label>
-                <input type="text" placeholder="Nome" class="form-control">
+                <select name="txtPet" class="form-select">
+                    <?php
+                    $listaPet = PetDao::buscar();
+                    foreach($listaPet as $pets){
+                       echo "<option value='{$pets->getId()}'>{$pets->getNome()}</option>";
+                    }
+                    ?>
+                </select>
                 <label class="form-label">Horários disponíveis</label>
                 <select class="form-select">
                     <option></option>
