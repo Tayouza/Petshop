@@ -6,6 +6,7 @@ class AbrirAgenda
     private $data;
     private $dataFormatada;
     private $hora;
+    private $ativo;
 
     public function __construct($data = NULL, $hora = NULL)
     {
@@ -99,6 +100,26 @@ class AbrirAgenda
     public function setHora($hora)
     {
         $this->hora = $hora;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of ativo
+     */ 
+    public function getAtivo()
+    {
+        return $this->ativo;
+    }
+
+    /**
+     * Set the value of ativo
+     *
+     * @return  self
+     */ 
+    public function setAtivo($ativo)
+    {
+        $this->ativo = $ativo;
 
         return $this;
     }

@@ -50,7 +50,7 @@ class AbrirAgendaDao
 
     public static function buscar()
     {
-        $sql = "SELECT id, data FROM agendadata";
+        $sql = "SELECT id, data FROM agendadata ORDER BY data";
         $result = Conexao::consultar($sql);
         $lista = new ArrayObject();
         if ($result != null) {
@@ -96,27 +96,19 @@ class AbrirAgendaDao
 
     public static function buscarHorarios($id_data)
     {
-        $sql = "SELECT id, hora FROM agendahora WHERE id_data = '{$id_data}'";
+        $sql = "SELECT id, hora, ativo FROM agendahora WHERE id_data = '{$id_data}'";
         $result = Conexao::consultar($sql);
         $lista = new ArrayObject();
         if ($result != null) {
-            while (list($_id, $_hora) = mysqli_fetch_row($result)) {
+            while (list($_id, $_hora, $_ativo) = mysqli_fetch_row($result)) {
                 $abrirAgenda = new AbrirAgenda();
                 $abrirAgenda->setId($_id);
                 $abrirAgenda->setHora($_hora);
+                $abrirAgenda->setAtivo($_ativo);
                 $lista->append($abrirAgenda);
             }
         }
         return $lista;
-    }
-
-    public static function editar($abrirAgenda)
-    {
-        $sql = "UPDATE abrirAgenda SET 
-                data = '{$abrirAgenda->getNome()}',
-                hora = '{$abrirAgenda->getSigla()}' 
-                WHERE id = {$abrirAgenda->getId()}";
-        Conexao::executar($sql);
     }
 
     public static function excluir($id)

@@ -96,7 +96,7 @@ var_dump($value);*/
                 <input type="submit" value="Abrir" class="btn btn-success">
             </form>
 
-            <form action="./FrmAbrirAgenda.php?selecionar" method="GET" class="mt-4">
+            <form action="./FrmAbrirAgenda.php" method="GET" class="mt-4">
                 <label class="form-label">Fechar data e horário</label>
                 <select name="txtFecharData" id="fecharData" class="form-select mb-2">
                     <?php
