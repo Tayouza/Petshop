@@ -22,7 +22,7 @@ include_once "../DAO/AgendaDao.php";
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-xxl navbar-light bg-light">
+        <nav class="navbar navbar-light bg-light">
             <div class="d-flex container">
                 <a class="navbar-brand" href="../index.php">
                     <img src="../assets/logo.jpg" style="border-radius: 50%;" width="100px" alt="">
