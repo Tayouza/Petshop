@@ -12,6 +12,7 @@ include_once '../DAO/InfoAgendamentoDao.php';
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="../public/css/erro.css">
     <title>Informações de agendamento</title>
 </head>
 
@@ -91,25 +92,35 @@ include_once '../DAO/InfoAgendamentoDao.php';
     <div class="informacoes container">
         <table class="table table-striped">
             <thead>
-                <tr>
+                <tr class="text-center">
+                    <th>Nome do Tutor</th>
                     <th>Nome do PET</th>
+                    <th>Data</th>
                     <th>Hora</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                if (isset($_GET['CPF'])) {
+                if (isset($_GET['CPF'])) :
                     $listas = InfoAgendamentoDao::buscarCpf($_GET['CPF']);
-                    foreach ($listas as $lista) {
-                        echo "<tr>";
-                        echo "<td>{$lista->getNomePet()}</td>";
-                        echo "<td>{$lista->getHora()}</td>";
-                        echo "</tr>";
-                    }
-                }
+                    if (count($listas) != 0) :
+                        foreach ($listas as $lista) {
+                            echo "<tr class='text-center'>";
+                            echo "<td>{$lista->getNomeTutor()}</td>";
+                            echo "<td>{$lista->getNomePet()}</td>";
+                            echo "<td>{$lista->getData()}</td>";
+                            echo "<td>{$lista->getHora()}</td>";
+                            echo "</tr>";
+                        }
                 ?>
             </tbody>
         </table>
+<?php
+                    else :
+                        echo "<p class='erro-msg'>CPF não encontrado!</p>";
+                    endif;
+                endif;
+?>
     </div>
     <?php
     include "templates/footer.php";

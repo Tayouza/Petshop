@@ -14,7 +14,6 @@ if (isset($_REQUEST['inserir'])) {
         !empty($_POST['txtCep']) &&
         !empty($_POST['txtEndereco']) &&
         !empty($_POST['txtNumero']) &&
-        !empty($_POST['txtComplemento']) &&
         !empty($_POST['cidade']) &&
         !empty($_POST['estado']) &&
         !empty($_POST['pais']))) {
@@ -26,7 +25,7 @@ if (isset($_REQUEST['inserir'])) {
         $cep = $_POST['txtCep'];
         $endereco = $_POST['txtEndereco'];
         $numero = $_POST['txtNumero'];
-        $complemento = $_POST['txtComplemento'];
+        $complemento = $_POST['txtComplemento'] ?? "";
         $cidade = $_POST['cidade'];
         $estado = $_POST['estado'];
         $pais = $_POST['pais'];

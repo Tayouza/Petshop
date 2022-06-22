@@ -1,0 +1,7 @@
+.erro-msg{
+    padding: 20px;
+    border: 1px solid tomato;
+    color: tomato;
+    width: 100%;
+    text-align: center;
+}
