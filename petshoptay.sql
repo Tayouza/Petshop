@@ -111,7 +111,7 @@ CREATE TABLE `cliente` (
   `id` int(11) NOT NULL,
   `nome` varchar(255) NOT NULL,
   `nacionalidade` varchar(255) NOT NULL,
-  `cpf` varchar(13) NOT NULL,
+  `cpf` varchar(14) NOT NULL,
   `email` varchar(255) NOT NULL,
   `telefone` varchar(20) NOT NULL,
   `cep` varchar(10) NOT NULL,
@@ -128,7 +128,7 @@ CREATE TABLE `cliente` (
 --
 
 INSERT INTO `cliente` (`id`, `nome`, `nacionalidade`, `cpf`, `email`, `telefone`, `cep`, `endereco`, `numero`, `complemento`, `id_cidade`, `id_estado`, `id_pais`) VALUES
-(14, 'Taylor', 'Brasileiro', '999.999.999-9', 'taylorsouza97@hotmail.com', '(51) 9 9639-0912', '90050-170', 'Rua Sarmento Leite', '846', 'Ap 203', 19, 18, 25);
+(14, 'Taylor', 'Brasileiro', '999.999.999-99', 'taylorsouza97@hotmail.com', '(51) 9 9639-0912', '90050-170', 'Rua Sarmento Leite', '846', 'Ap 203', 19, 18, 25);
 
 -- --------------------------------------------------------
 

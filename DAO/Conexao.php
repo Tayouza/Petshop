@@ -5,7 +5,7 @@ class Conexao{
         $banco = "petshoptay";
         $local = "localhost";
         $usuario = "root";
-        $senha = "";
+        $senha = "password";
 
         $conn = mysqli_connect($local, $usuario, $senha, $banco);
 

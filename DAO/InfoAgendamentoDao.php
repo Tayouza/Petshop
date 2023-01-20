@@ -32,7 +32,7 @@ class InfoAgendamentoDao{
         return $lista;
     }
 
-    public static function buscarCpf($cpf){
+    public static function buscarPetPorCpf($cpf){
         $sql = "SELECT tutor.nome, pet.nome, ad.data, ah.hora
         FROM pet 
         INNER JOIN cliente as tutor

@@ -89,7 +89,7 @@ class ClienteDao
         return $lista;
     }
 
-    public static function buscarId($id)
+    public static function buscarPorId($id)
     {
         $sql = "SELECT cli.*, cid.nome AS nome_cidade,
                 es.nome AS nome_estado, 
@@ -141,6 +141,51 @@ class ClienteDao
             }
         }
         return $cliente;
+    }
+
+    public static function buscarPorCpf($cpf)
+    {
+        $sql = "SELECT * FROM cliente WHERE cpf = '{$cpf}';";
+        $result = Conexao::consultar($sql);
+        $lista = new ArrayObject();
+        if ($result != null) {
+            while (
+                list(
+                    $_id,
+                    $_nome,
+                    $_nacionalidade,
+                    $_cpf,
+                    $_email,
+                    $_telefone,
+                    $_cep,
+                    $_endereco,
+                    $_numero,
+                    $_complemento,
+                    $_idCidade,
+                    $_idEstado,
+                    $_idPais,
+                )
+                =
+                mysqli_fetch_row($result)
+            ) {
+                $cliente = new Cliente();
+                $cliente->setId($_id);
+                $cliente->setNome($_nome);
+                $cliente->setNacionalidade($_nacionalidade);
+                $cliente->setCpf($_cpf);
+                $cliente->setEmail($_email);
+                $cliente->setTelefone($_telefone);
+                $cliente->setCep($_cep);
+                $cliente->setEndereco($_endereco);
+                $cliente->setNumero($_numero);
+                $cliente->setComplemento($_complemento);
+                $cliente->setCidade($_idCidade);
+                $cliente->setEstado($_idEstado);
+                $cliente->setPais($_idPais);
+                $lista->append($cliente);
+            }
+        }
+        return $lista;
     }
 
     public static function editar($cliente)

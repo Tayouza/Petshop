@@ -6,7 +6,7 @@ $action = 'inserir';
 $listaPais = PaisDao::buscar();
 
 if (isset($_REQUEST['editar'])) {
-    $paisId = PaisDao::buscarId($_GET['id']);
+    $paisId = PaisDao::buscarPorId($_GET['id']);
     $values['nome'] = $paisId->getNome();
     $values['sigla'] = $paisId->getSigla();
     $action = "editar&id={$paisId->getId()}";

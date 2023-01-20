@@ -26,7 +26,7 @@ class AgendaDao{
         return $lista;
     }
 
-    public static function buscarId($id){
+    public static function buscarPorId($id){
         $sql = "SELECT id, id_pet, id_data FROM agendapet WHERE id = {$id}";
         $result = Conexao::consultar($sql);
         if($result != null){

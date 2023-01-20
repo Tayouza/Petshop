@@ -7,7 +7,7 @@ include_once "../DAO/ClienteDao.php";
 $action = 'inserir';
 
 if (isset($_REQUEST['editar'])) {
-    $cliente = ClienteDao::buscarId($_GET['id']);
+    $cliente = ClienteDao::buscarPorId($_GET['id']);
     $values['nome'] = $cliente->getNome();
     $values['nacionalidade'] = $cliente->getNacionalidade();
     $values['cpf'] = $cliente->getCpf();

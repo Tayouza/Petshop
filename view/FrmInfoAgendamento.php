@@ -1,6 +1,7 @@
 <?php
 
 include_once '../DAO/InfoAgendamentoDao.php';
+include_once '../DAO/ClienteDao.php';
 
 ?>
 
@@ -102,22 +103,26 @@ include_once '../DAO/InfoAgendamentoDao.php';
             <tbody>
                 <?php
                 if (isset($_GET['CPF'])) :
-                    $listas = InfoAgendamentoDao::buscarCpf($_GET['CPF']);
-                    if (count($listas) != 0) :
-                        foreach ($listas as $lista) {
-                            echo "<tr class='text-center'>";
-                            echo "<td>{$lista->getNomeTutor()}</td>";
-                            echo "<td>{$lista->getNomePet()}</td>";
-                            echo "<td>{$lista->getData()}</td>";
-                            echo "<td>{$lista->getHora()}</td>";
-                            echo "</tr>";
-                        }
+                    if(count(ClienteDao::buscarPorCpf($_GET['CPF'])) === 0):
+                        echo "<p class='erro-msg'>Não existe nenhum cliente com este CPF!</p>";
+                    else:
+                        $listas = InfoAgendamentoDao::buscarPetPorCpf($_GET['CPF']);
+                        if (count($listas) !== 0) :
+                            foreach ($listas as $lista) {
+                                echo "<tr class='text-center'>";
+                                echo    "<td>{$lista->getNomeTutor()}</td>";
+                                echo    "<td>{$lista->getNomePet()}</td>";
+                                echo    "<td>{$lista->getData()}</td>";
+                                echo    "<td>{$lista->getHora()}</td>";
+                                echo "</tr>";
+                            }
                 ?>
             </tbody>
         </table>
 <?php
-                    else :
-                        echo "<p class='erro-msg'>CPF não encontrado!</p>";
+                        else :
+                            echo "<p class='erro-msg'>Nenhuma agenda com este CPF foi encontrada!</p>";
+                        endif;
                     endif;
                 endif;
 ?>

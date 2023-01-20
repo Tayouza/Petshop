@@ -10,7 +10,7 @@ $listaEstados = EstadoDao::buscar();
 $listaPais = PaisDao::buscar();
 
 if (isset($_REQUEST['editar'])) {
-    $estadoId = EstadoDao::buscarId($_GET['id']);
+    $estadoId = EstadoDao::buscarPorId($_GET['id']);
     $values['nome'] = $estadoId->getNome();
     $values['uf'] = $estadoId->getUf();
     $values['pais'] = $estadoId->getPais();

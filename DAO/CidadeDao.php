@@ -32,7 +32,7 @@ class CidadeDao
         return $lista;
     }
 
-    public static function buscarId($id)
+    public static function buscarPorId($id)
     {
         $sql = "SELECT id, nome, id_estado, id_pais FROM cidade WHERE id = {$id}";
         $result = Conexao::consultar($sql);

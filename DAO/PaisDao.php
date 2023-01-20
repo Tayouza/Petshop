@@ -1,6 +1,6 @@
 <?php
 include_once "../DAO/Conexao.php";
-include_once "../model/paisModel.php";
+include_once "../model/PaisModel.php";
 
 class PaisDao{
     public static function inserir($pais){
@@ -24,7 +24,7 @@ class PaisDao{
         return $lista;
     }
 
-    public static function buscarId($id){
+    public static function buscarPorId($id){
         $sql = "SELECT id, nome, sigla FROM pais WHERE pais.id = {$id}";
         $result = Conexao::consultar($sql);
         if($result != null){

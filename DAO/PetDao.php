@@ -1,6 +1,6 @@
 <?php
 include_once "../DAO/Conexao.php";
-include_once "../model/petModel.php";
+include_once "../model/PetModel.php";
 
 class PetDao
 {
@@ -40,7 +40,7 @@ class PetDao
         return $lista;
     }
 
-    public static function buscarId($id)
+    public static function buscarPorId($id)
     {
         $sql = "SELECT pet.id, pet.nome, tutor.nome, raca, idade, infos 
         FROM pet

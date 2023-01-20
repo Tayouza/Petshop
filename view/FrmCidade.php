@@ -9,7 +9,7 @@ $listaPais = PaisDao::buscar();
 $listaCidades = CidadeDao::buscar();
 
 if (isset($_REQUEST['editar'])) {
-    $cidadeId = CidadeDao::buscarId($_GET['id']);
+    $cidadeId = CidadeDao::buscarPorId($_GET['id']);
     $values['nome'] = $cidadeId->getNome();
     $values['estado'] = $cidadeId->getEstado();
     $values['pais'] = $cidadeId->getPais();

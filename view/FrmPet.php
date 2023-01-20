@@ -7,7 +7,7 @@ $action = 'inserir';
 $listaClientes = ClienteDao::buscar();
 
 if (isset($_REQUEST['editar'])) {
-    $petId = PetDao::buscarId($_GET['id']);
+    $petId = PetDao::buscarPorId($_GET['id']);
     $values['nome'] = $petId->getNome();
     $values['tutor'] = $petId->getTutor();
     $values['raca'] = $petId->getRaca();

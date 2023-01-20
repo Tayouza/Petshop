@@ -32,7 +32,7 @@ class EstadoDao
         return $lista;
     }
 
-    public static function buscarId($id){
+    public static function buscarPorId($id){
         $sql = "SELECT id, nome, uf, id_pais FROM estado WHERE estado.id = {$id}";
         $result = Conexao::consultar($sql);
         if ($result != null) {
